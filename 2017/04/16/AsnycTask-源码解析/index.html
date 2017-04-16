@@ -1,0 +1,735 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="AsyncTask 意义AsyncTask 是一个轻量级的异步类，它是使用线程池执行后台任务，并将结果传送到主线程更新UI；下面是源码的介绍： 123AsyncTask enables proper and easy use of the UI thread. This class allows you to perform background operations and publish re">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AsnycTask 源码解析">
+<meta property="og:url" content="http://yoursite.com/2017/04/16/AsnycTask-源码解析/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="AsyncTask 意义AsyncTask 是一个轻量级的异步类，它是使用线程池执行后台任务，并将结果传送到主线程更新UI；下面是源码的介绍： 123AsyncTask enables proper and easy use of the UI thread. This class allows you to perform background operations and publish re">
+<meta property="og:updated_time" content="2017-04-16T16:20:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AsnycTask 源码解析">
+<meta name="twitter:description" content="AsyncTask 意义AsyncTask 是一个轻量级的异步类，它是使用线程池执行后台任务，并将结果传送到主线程更新UI；下面是源码的介绍： 123AsyncTask enables proper and easy use of the UI thread. This class allows you to perform background operations and publish re">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/16/AsnycTask-源码解析/"/>
+
+
+
+
+
+  <title> AsnycTask 源码解析 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/16/AsnycTask-源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhangzaidong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                AsnycTask 源码解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-16T23:21:22+08:00">
+                2017-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="AsyncTask-意义"><a href="#AsyncTask-意义" class="headerlink" title="AsyncTask 意义"></a>AsyncTask 意义</h3><p>AsyncTask 是一个轻量级的异步类，它是使用线程池执行后台任务，并将结果传送到主线程更新UI；下面是源码的介绍：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">AsyncTask enables proper and easy use of the UI thread. This class allows you to perform background operations and publish results on the UI thread without having to manipulate threads and/or handlers.</div><div class="line">//AsyncTask 不能执行耗时过多的任务，</div><div class="line">AsyncTasks should ideally be used for short operations (a few seconds at the most.) If you need to keep threads running for long periods of time, it is highly recommended you use the various APIs provided by the &lt;code&gt;java.util.concurrent&lt;/code&gt; package such as &#123;@link Executor&#125;,&#123;@link ThreadPoolExecutor&#125; and &#123;@link FutureTask&#125;.</div></pre></td></tr></table></figure>
+<p>AsyncTask的内部封装了<strong>两个线程池</strong>(SerialExecutor和THREAD_POOL_EXECUTOR)和<strong>一个Handler</strong>(InternalHandler)。</p>
+<p>其中<strong>SerialExecutor线程池用于任务的排队，让需要执行的多个耗时任务，按顺序排列</strong>，<strong>THREAD_POOL_EXECUTOR线程池才真正地执行任务</strong>，<strong>InternalHandler用于从工作线程切换到主线程</strong>。</p>
+<h3 id="AsyncTask-creator"><a href="#AsyncTask-creator" class="headerlink" title="AsyncTask creator"></a>AsyncTask creator</h3><p>声明如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public abstract class AsyncTask&lt;Params, Progress, Result&gt;</div></pre></td></tr></table></figure>
+<p>继承 AsyncTask 必须重写它相应的方法；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1: onPreExecute()  --- mainThread</div><div class="line">2: doInBackground(Params... params)  --- 必须重写，在workerThread中</div><div class="line">3: onProgressUpdate(Progress... values)   --- mainThread</div><div class="line">4: onPostExecute(Result result) --- MainThread</div></pre></td></tr></table></figure>
+<p>方法的调用顺序：</p>
+<ul>
+<li>需要更新进度：</li>
+</ul>
+<p>上面几个方法的调用顺序：<br>onPreExecute() –&gt; doInBackground() –&gt; publishProgress() –&gt; onProgressUpdate() –&gt; onPostExecute()</p>
+<ul>
+<li>不需要更新进度</li>
+</ul>
+<p>onPreExecute() –&gt; doInBackground() –&gt; onPostExecute()</p>
+<p>简单使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">class DownloadTask extends AsyncTask&lt;Void, Integer, Boolean&gt; &#123;  </div><div class="line"></div><div class="line">    @Override  </div><div class="line">    protected void onPreExecute() &#123;  </div><div class="line">        progressDialog.show();  </div><div class="line">    &#125;  </div><div class="line"></div><div class="line">    @Override  </div><div class="line">    protected Boolean doInBackground(Void... params) &#123;  </div><div class="line">        try &#123;  </div><div class="line">            while (true) &#123;  </div><div class="line">                int downloadPercent = doDownload();  </div><div class="line">                publishProgress(downloadPercent);  </div><div class="line">                if (downloadPercent &gt;= 100) &#123;  </div><div class="line">                    break;  </div><div class="line">                &#125;  </div><div class="line">            &#125;  </div><div class="line">        &#125; catch (Exception e) &#123;  </div><div class="line">            return false;  </div><div class="line">        &#125;  </div><div class="line">        return true;  </div><div class="line">    &#125;  </div><div class="line"></div><div class="line">    @Override  </div><div class="line">    protected void onProgressUpdate(Integer... values) &#123;  </div><div class="line">        progressDialog.setMessage(&quot;当前下载进度：&quot; + values[0] + &quot;%&quot;);  </div><div class="line">    &#125;  </div><div class="line"></div><div class="line">    @Override  </div><div class="line">    protected void onPostExecute(Boolean result) &#123;  </div><div class="line">        progressDialog.dismiss();  </div><div class="line">        if (result) &#123;  </div><div class="line">            Toast.makeText(context, &quot;下载成功&quot;, Toast.LENGTH_SHORT).show();  </div><div class="line">        &#125; else &#123;  </div><div class="line">            Toast.makeText(context, &quot;下载失败&quot;, Toast.LENGTH_SHORT).show();  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">new DownloadTask().execute();//顺序执行</div></pre></td></tr></table></figure>
+<h3 id="AsyncTask-源码"><a href="#AsyncTask-源码" class="headerlink" title="AsyncTask 源码"></a>AsyncTask 源码</h3><p>先简单的介绍一下基本属性，源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();</div><div class="line">    // We want at least 2 threads and at most 4 threads in the core pool,</div><div class="line">    // preferring to have 1 less than the CPU count to avoid saturating</div><div class="line">    // the CPU with background work</div><div class="line">    private static final int CORE_POOL_SIZE = Math.max(2, Math.min(CPU_COUNT - 1, 4));</div><div class="line">    private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;</div><div class="line">    private static final int KEEP_ALIVE_SECONDS = 30;</div><div class="line">	//实例化线程工厂，用于后面创建线程池</div><div class="line">    private static final ThreadFactory sThreadFactory = new ThreadFactory() &#123;</div><div class="line">        private final AtomicInteger mCount = new AtomicInteger(1);</div><div class="line"></div><div class="line">        public Thread newThread(Runnable r) &#123;</div><div class="line">            return new Thread(r, &quot;AsyncTask #&quot; + mCount.getAndIncrement());</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">	//阻塞队列</div><div class="line">    private static final BlockingQueue&lt;Runnable&gt; sPoolWorkQueue =</div><div class="line">            new LinkedBlockingQueue&lt;Runnable&gt;(128);</div><div class="line"></div><div class="line">    /**</div><div class="line">     * An &#123;@link Executor&#125; that can be used to execute tasks in parallel.</div><div class="line">     * 并发执行任务的线程池</div><div class="line">     */</div><div class="line">    public static final Executor THREAD_POOL_EXECUTOR;</div><div class="line"></div><div class="line">    static &#123;</div><div class="line">        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(</div><div class="line">                CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,</div><div class="line">                sPoolWorkQueue, sThreadFactory);</div><div class="line">        threadPoolExecutor.allowCoreThreadTimeOut(true);</div><div class="line">        THREAD_POOL_EXECUTOR = threadPoolExecutor;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * An &#123;@link Executor&#125; that executes tasks one at a time in serial</div><div class="line">     * order.  This serialization is global to a particular process.</div><div class="line">     * 顺序执行</div><div class="line">     */</div><div class="line">    public static final Executor SERIAL_EXECUTOR = new SerialExecutor();</div><div class="line"></div><div class="line">    private static final int MESSAGE_POST_RESULT = 0x1;</div><div class="line">    private static final int MESSAGE_POST_PROGRESS = 0x2;</div><div class="line"></div><div class="line">    private static volatile Executor sDefaultExecutor = SERIAL_EXECUTOR;</div><div class="line">    private static InternalHandler sHandler;//发送事件</div><div class="line"></div><div class="line">    private final WorkerRunnable&lt;Params, Result&gt; mWorker;</div><div class="line">    private final FutureTask&lt;Result&gt; mFuture;</div><div class="line"></div><div class="line">    private volatile Status mStatus = Status.PENDING;</div></pre></td></tr></table></figure>
+<p>AsyncTask 的构造函数，必须初始化在UI 线程，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">public AsyncTask() &#123;</div><div class="line">        mWorker = new WorkerRunnable&lt;Params, Result&gt;() &#123;</div><div class="line">            public Result call() throws Exception &#123;</div><div class="line">                mTaskInvoked.set(true);</div><div class="line">                Result result = null;</div><div class="line">                try &#123;</div><div class="line">                    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);</div><div class="line">                    //noinspection unchecked</div><div class="line">                    result = doInBackground(mParams);</div><div class="line">                    Binder.flushPendingCommands();</div><div class="line">                &#125; catch (Throwable tr) &#123;</div><div class="line">                    mCancelled.set(true);</div><div class="line">                    throw tr;</div><div class="line">                &#125; finally &#123;</div><div class="line">                    postResult(result);</div><div class="line">                &#125;</div><div class="line">                return result;</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        mFuture = new FutureTask&lt;Result&gt;(mWorker) &#123;</div><div class="line">            @Override</div><div class="line">            protected void done() &#123;</div><div class="line">                try &#123;</div><div class="line">                    postResultIfNotInvoked(get());</div><div class="line">                &#125; catch (InterruptedException e) &#123;</div><div class="line">                    android.util.Log.w(LOG_TAG, e);</div><div class="line">                &#125; catch (ExecutionException e) &#123;</div><div class="line">                    throw new RuntimeException(&quot;An error occurred while executing doInBackground()&quot;,</div><div class="line">                            e.getCause());</div><div class="line">                &#125; catch (CancellationException e) &#123;</div><div class="line">                    postResultIfNotInvoked(null);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这段代码只是初始化了 mWorker 和 mFuture 这两个变量，并将 mWorker 作为参数传到了 mFuture 中；</p>
+<ul>
+<li>执行任务</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@MainThread</div><div class="line">public final AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) &#123;</div><div class="line">    return executeOnExecutor(sDefaultExecutor, params);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个 execute()方法只能顺序执行，其中 sDefaultExecutor 为上文中的 SERIAL_EXECUTOR；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">@MainThread</div><div class="line">public final AsyncTask&lt;Params, Progress, Result&gt; executeOnExecutor(Executor exec,</div><div class="line">        Params... params) &#123;</div><div class="line">    if (mStatus != Status.PENDING) &#123;</div><div class="line">        switch (mStatus) &#123;</div><div class="line">            case RUNNING:</div><div class="line">                throw new IllegalStateException(&quot;Cannot execute task:&quot;</div><div class="line">                        + &quot; the task is already running.&quot;);</div><div class="line">            case FINISHED:</div><div class="line">                throw new IllegalStateException(&quot;Cannot execute task:&quot;</div><div class="line">                        + &quot; the task has already been executed &quot;</div><div class="line">                        + &quot;(a task can be executed only once)&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    mStatus = Status.RUNNING;</div><div class="line"> //第一个调用</div><div class="line">    onPreExecute();</div><div class="line"></div><div class="line">    mWorker.mParams = params;</div><div class="line">    exec.execute(mFuture);//执行耗时任务</div><div class="line"></div><div class="line">    return this;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">private static class SerialExecutor implements Executor &#123;</div><div class="line">    final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();</div><div class="line">    Runnable mActive;</div><div class="line"></div><div class="line">    public synchronized void execute(final Runnable r) &#123;</div><div class="line">        mTasks.offer(new Runnable() &#123;</div><div class="line">            public void run() &#123;</div><div class="line">                try &#123;</div><div class="line">                    r.run();</div><div class="line">                &#125; finally &#123;</div><div class="line">                    scheduleNext();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        if (mActive == null) &#123;</div><div class="line">            scheduleNext();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected synchronized void scheduleNext() &#123;</div><div class="line">        if ((mActive = mTasks.poll()) != null) &#123;</div><div class="line">            THREAD_POOL_EXECUTOR.execute(mActive);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>SerialExecutor 内部维持了一个队列，通过锁使得该队列保证AsyncTask中的任务是串行执行的，即多个任务需要一个个加到该队列中，然后执行完队列头部的再执行下一个，以此类推。</p>
+<h6 id="SerialExecutor-只是为了维持任务的顺序执行，实际执行任务还是交给-THREAD-POOL-EXECUTOR"><a href="#SerialExecutor-只是为了维持任务的顺序执行，实际执行任务还是交给-THREAD-POOL-EXECUTOR" class="headerlink" title="SerialExecutor 只是为了维持任务的顺序执行，实际执行任务还是交给 THREAD_POOL_EXECUTOR;"></a>SerialExecutor 只是为了维持任务的顺序执行，实际执行任务还是交给 THREAD_POOL_EXECUTOR;</h6><p>执行完 doInBackgroudn() 方法之后，执行 postResult() 方法；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">private Result postResult(Result result) &#123;</div><div class="line">    @SuppressWarnings(&quot;unchecked&quot;)</div><div class="line">    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,</div><div class="line">            new AsyncTaskResult&lt;Result&gt;(this, result));</div><div class="line">    message.sendToTarget();</div><div class="line">    return result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private static Handler getHandler() &#123;</div><div class="line">    synchronized (AsyncTask.class) &#123;</div><div class="line">        if (sHandler == null) &#123;</div><div class="line">            sHandler = new InternalHandler();</div><div class="line">        &#125;</div><div class="line">        return sHandler;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">private static class InternalHandler extends Handler &#123;</div><div class="line">    public InternalHandler() &#123;</div><div class="line">        super(Looper.getMainLooper());//这是所有的一切必须在主线程启动的原因</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @SuppressWarnings(&#123;&quot;unchecked&quot;, &quot;RawUseOfParameterizedType&quot;&#125;)</div><div class="line">    @Override</div><div class="line">    public void handleMessage(Message msg) &#123;</div><div class="line">        AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;</div><div class="line">        switch (msg.what) &#123;</div><div class="line">            case MESSAGE_POST_RESULT:</div><div class="line">                // There is only one result</div><div class="line">                result.mTask.finish(result.mData[0]);</div><div class="line">                break;</div><div class="line">            case MESSAGE_POST_PROGRESS:</div><div class="line">                result.mTask.onProgressUpdate(result.mData);</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>InternalHandler 是一个内部类，接收到 MESSAGE_POST_RESULT 表示执行完毕；</p>
+<p><strong>InternalHandler是一个静态类，为了能够将执行环境切换到主线程，因此这个类必须在主线程中进行加载。所以变相要求AsyncTask的类必须在主线程中进行加载。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private void finish(Result result) &#123;</div><div class="line">    if (isCancelled()) &#123;</div><div class="line">        onCancelled(result);</div><div class="line">    &#125; else &#123;</div><div class="line">        onPostExecute(result);//任务完成</div><div class="line">    &#125;</div><div class="line">    mStatus = Status.FINISHED;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Status 有三种状态，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public enum Status &#123;</div><div class="line">    /**</div><div class="line">     * Indicates that the task has not been executed yet.</div><div class="line">     */</div><div class="line">    PENDING,</div><div class="line">    /**</div><div class="line">     * Indicates that the task is running.</div><div class="line">     */</div><div class="line">    RUNNING,</div><div class="line">    /**</div><div class="line">     * Indicates that &#123;@link AsyncTask#onPostExecute&#125; has finished.</div><div class="line">     */</div><div class="line">    FINISHED,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="AsyncTask-的缺陷"><a href="#AsyncTask-的缺陷" class="headerlink" title="AsyncTask 的缺陷"></a>AsyncTask 的缺陷</h3><p>1.）生命周期</p>
+<p>AsyncTask不与任何组件绑定生命周期，所以在Activity/或者Fragment中创建执行AsyncTask时，最好在Activity/Fragment的onDestory()调用 cancel(boolean)；</p>
+<p>2.)内存泄漏</p>
+<p>如果AsyncTask被声明为Activity的非静态的内部类，那么AsyncTask会保留一个对创建了AsyncTask的Activity的引用。如果Activity已经被销毁，AsyncTask的后台线程还在执行，它将继续在内存里保留这个引用，导致Activity无法被回收，引起内存泄露。</p>
+<p>3.) 结果丢失</p>
+<p>屏幕旋转或Activity在后台被系统杀掉等情况会导致Activity的重新创建，之前运行的AsyncTask（非静态的内部类）会持有一个之前Activity的引用，这个引用已经无效，这时调用onPostExecute()再去更新界面将不再生效。</p>
+<p>4）串行还是并行</p>
+<p>从上述源码分析中分析得到，默认情况下AsyncTask的执行效果是串行的，因为有了SerialExecutor类来维持保证队列的串行。如果想使用并行执行任务，那么可以直接跳过SerialExecutor类，使用executeOnExecutor()来执行任务。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/16/回炉再造Handler/" rel="prev" title="回炉再造Handler">
+                回炉再造Handler <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="zhangzaidong" />
+          <p class="site-author-name" itemprop="name">zhangzaidong</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AsyncTask-意义"><span class="nav-number">1.</span> <span class="nav-text">AsyncTask 意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AsyncTask-creator"><span class="nav-number">2.</span> <span class="nav-text">AsyncTask creator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AsyncTask-源码"><span class="nav-number">3.</span> <span class="nav-text">AsyncTask 源码</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SerialExecutor-只是为了维持任务的顺序执行，实际执行任务还是交给-THREAD-POOL-EXECUTOR"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">SerialExecutor 只是为了维持任务的顺序执行，实际执行任务还是交给 THREAD_POOL_EXECUTOR;</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AsyncTask-的缺陷"><span class="nav-number">4.</span> <span class="nav-text">AsyncTask 的缺陷</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangzaidong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
