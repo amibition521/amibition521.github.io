@@ -112,7 +112,18 @@
 <meta property="og:description" content="第一季主要讲 Android 性能优化涉及到的几个方面，包括：Android 的渲染机制、内存与GC。还有查看相关性能的工具以及提升性能的建议。 RenderPerformance我们都听到过 60fps与16ms 的概念，那么它们到底是什么呢？我们为什么用60fps来衡量 App 的性能呢？这是因为人眼与大脑之间的协作无法感知超过60fps的画面更新。 开发 App 的性能目标是保持60fps,">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/memory_mode_generation.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_memory_gc_mode.png">
-<meta property="og:updated_time" content="2017-05-01T04:33:35.000Z">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_3_arraymap_key_value.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_3_arraymap_two_array.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_looper.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/Users/nieyuxin/Downloads/android_perf_5_thread_handler.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_messagequeue.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_handlerthread.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_asynctask_cancel.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_threadpool_4.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_6_launch_time_start_process.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_6_smaller_apks_gradle.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_6_smaller_apks_dpi.png">
+<meta property="og:updated_time" content="2017-05-01T12:05:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 性能优化典范学习笔记">
 <meta name="twitter:description" content="第一季主要讲 Android 性能优化涉及到的几个方面，包括：Android 的渲染机制、内存与GC。还有查看相关性能的工具以及提升性能的建议。 RenderPerformance我们都听到过 60fps与16ms 的概念，那么它们到底是什么呢？我们为什么用60fps来衡量 App 的性能呢？这是因为人眼与大脑之间的协作无法感知超过60fps的画面更新。 开发 App 的性能目标是保持60fps,">
@@ -359,7 +370,7 @@
 <p>有几点建议，</p>
 <ul>
 <li>不要在for 循环里分配对象占用内存，如果需要的话，把对象的创建移到循环体外。</li>
-<li>避免在自定义 View 的 onDraw() 方法执行复杂的操作，避免创建对象。</li>
+<li>避免在自定义 View 的 onDraw() 方法执行复杂的操作，避免创建对象。因为 onDraw() 方法的执行是在 UI 线程的，设备有一定的刷新频率，导致 View 的 onDraw() 方法被频繁的调用，如果里面不断的创建对象，就容易发生内存抖动。</li>
 <li>对于那些无法避免创建对象的情况，我们可以考虑创建对象池模型，通过对象池模型来解决频繁创建和销毁的问题，但是在使用完毕时，必须手动释放对象池中的对象。</li>
 </ul>
 <h5 id="Garbage-Collection-in-Android"><a href="#Garbage-Collection-in-Android" class="headerlink" title="Garbage Collection in Android"></a>Garbage Collection in Android</h5><p>Android里面是一个三级Generation的内存模型，最近分配的对象会存放在Young Generation区域，当这个对象在这个区域停留的时间达到一定程度，它会被移动到Old Generation，最后到Permanent Generation区域。</p>
@@ -371,6 +382,102 @@
 <li><strong>Heap Tool：</strong>查看当前内存快照，便于对比分析哪些对象有可能是泄漏了的，</li>
 <li><strong>MAT</strong></li>
 </ul>
+<h4 id="第二季"><a href="#第二季" class="headerlink" title="第二季"></a>第二季</h4><h5 id="Custom-Views-and-Performance"><a href="#Custom-Views-and-Performance" class="headerlink" title="Custom Views and Performance"></a>Custom Views and Performance</h5><p>针对自定义View，我们可能犯下面三个错误：</p>
+<ul>
+<li><strong>Useless calls to onDraw()：</strong>我们知道调用View.invalidate()会触发View的重绘，有两个原则需要遵守，第1个是仅仅在View的内容发生改变的时候才去触发invalidate方法，第2个是尽量使用ClipRect等方法来提高绘制的性能。</li>
+<li><strong>Useless pixels：</strong>减少绘制时不必要的绘制元素，对于那些不可见的元素，我们需要尽量避免重绘。</li>
+<li><strong>Wasted CPU cycles：</strong>对于不在屏幕上的元素，可以使用Canvas.quickReject把他们给剔除，避免浪费CPU资源。另外尽量使用GPU来进行UI的渲染，这样能够极大的提高程序的整体表现性能。</li>
+</ul>
+<h5 id="Pre-scaling-Bitmaps"><a href="#Pre-scaling-Bitmaps" class="headerlink" title="Pre-scaling Bitmaps"></a>Pre-scaling Bitmaps</h5><p>BitmapFactory 在解码图片时，可以带一个Options，有一些比较有用的功能，比如：</p>
+<ul>
+<li><strong>inTargetDensity</strong> 表示要被画出来时的目标像素密度</li>
+<li><strong>inSampleSize</strong> 这个值是一个int，当它小于1的时候，将会被当做1处理，如果大于1，那么就会按照比例（1 / inSampleSize）缩小bitmap的宽和高、降低分辨率，大于1时这个值将会被处置为2的倍数。例如，width=100，height=100，inSampleSize=2，那么就会将bitmap处理为，width=50，height=50，宽高降为1 / 2，像素数降为1 / 4</li>
+<li><strong>inJustDecodeBounds</strong> 字面意思就可以理解就是只解析图片的边界，有时如果只是为了获取图片的大小就可以用这个，而不必直接加载整张图片。</li>
+<li><strong>inPreferredConfig</strong> 默认会使用ARGB_8888,在这个模式下一个像素点将会占用4个byte,而对一些没有透明度要求或者图片质量要求不高的图片，可以使用RGB_565，一个像素只会占用2个byte，一下可以省下50%内存。</li>
+<li><strong>inPurgeable</strong>和<strong>inInputShareable</strong> 这两个需要一起使用，BitmapFactory.java的源码里面有注释，大致意思是表示在系统内存不足时是否可以回收这个bitmap，有点类似软引用，但是实际在5.0以后这两个属性已经被忽略，因为系统认为回收后再解码实际会反而可能导致性能问题</li>
+<li><strong>inBitmap</strong> 官方推荐使用的参数，表示重复利用图片内存，减少内存分配，在4.4以前只有相同大小的图片内存区域可以复用，4.4以后只要原有的图片比将要解码的图片大既可以复用了。新申请的 bitmap 与旧的 bitmap 必须有相同的解码格式，比如8888或者565。</li>
+</ul>
+<h4 id="第三季"><a href="#第三季" class="headerlink" title="第三季"></a>第三季</h4><h5 id="Fun-with-ArrayMap"><a href="#Fun-with-ArrayMap" class="headerlink" title="Fun with ArrayMap"></a>Fun with ArrayMap</h5><p>我们经常使用 HashMap 这个容器，很好用，但是却很占用内存，每次分配存储空间都是2的整数次幂，这样就有很多没有利用的空间，简单工作原理如下图：</p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_3_arraymap_key_value.png" alt="HashMap"></p>
+<p> 为了解决 HashMap 的弊端，Android 提供了内存效率更高的 <strong>ArrayMap</strong>,它内部使用两个数组进行工作，其中一个数组记录key hash过后的顺序列表，另外一个数组按key的顺序记录Key-Value值，如下图所示：</p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_3_arraymap_two_array.png" alt="Arraymap"></p>
+<p>由于 ArrayMap 在内存中是连续的，因此它的插入和删除操作效率比较低。但是如果数组的列表只是在一百这个数量级上，则完全不用担心这些插入与删除的效率问题。</p>
+<p>我们应该在满足下面2个条件的时候才考虑使用ArrayMap：</p>
+<ul>
+<li>对象个数的数量级最好是千以内</li>
+<li>数据组织形式包含Map结构</li>
+</ul>
+<h4 id="第五季"><a href="#第五季" class="headerlink" title="第五季"></a>第五季</h4><h5 id="Threading-Performance"><a href="#Threading-Performance" class="headerlink" title="Threading Performance"></a>Threading Performance</h5><p>Android 下的多线程有几种方案，如下：</p>
+<ul>
+<li><strong>AsyncTask</strong>: 为UI线程与工作线程之间进行快速的切换提供一种简单便捷的机制。适用于当下立即需要启动，但是异步执行的生命周期短暂的使用场景。</li>
+<li><strong>HandlerThread</strong>: 为某些回调方法或者等待某些任务的执行设置一个专属的线程，并提供线程任务的调度机制。</li>
+<li><strong>ThreadPool</strong>: 把任务分解成不同的单元，分发到各个不同的线程上，进行同时并发处理。</li>
+<li><strong>IntentService</strong>: 适合于执行由UI触发的后台Service任务，并可以把后台任务执行的情况通过一定的机制反馈给UI。</li>
+</ul>
+<h5 id="Understanding-Android-Threading"><a href="#Understanding-Android-Threading" class="headerlink" title="Understanding Android Threading"></a>Understanding Android Threading</h5><p><strong>Looper：</strong> 能够确保线程持续存活并且可以不断的从任务队列中获取任务并进行执行。</p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_looper.png" alt="Looper"></p>
+<p><strong>Handler:</strong> 能够帮助实现队列任务的管理，不仅仅能够把任务插入到队列的头部，尾部，还可以按照一定的时间延迟来确保任务从队列中能够来得及被取消掉。</p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/Users/nieyuxin/Downloads/android_perf_5_thread_handler.png" alt="Handler"></p>
+<p><strong>MessageQueue：</strong> 使用 Intent、Message、Runnable 作为任务的载体在不同的线程中传递。</p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_messagequeue.png" alt="MessageQueue"></p>
+<p>上面三个组件打包在一起进行协作，就是 <strong>Handler Thread</strong></p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_handlerthread.png" alt="HandlerThread"></p>
+<h5 id="Good-AsyncTask-Hunting"><a href="#Good-AsyncTask-Hunting" class="headerlink" title="Good AsyncTask Hunting"></a>Good AsyncTask Hunting</h5><p>使用 AsyncTask 需要注意几个问题，如下：</p>
+<ul>
+<li>默认情况下，AsyncTask 是顺序执行的，如果要并发执行，可以调用<code>AsyncTask.executeOnExecutor()</code> 使用线程池并发执行。</li>
+<li>如何正确的取消一个 AsyncTask 任务？我们需要在<code>doInBackground()</code>的代码中不断的添加程序是否被中止的判断逻辑，如下图所示：</li>
+</ul>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_asynctask_cancel.png" alt="AsyncTask Cancle"></p>
+<p>一旦任务被成功中止，AsyncTask就不会继续调用<code>onPostExecute()</code>，而是通过调用<code>onCancelled()</code>的回调方法反馈任务执行取消的结果。我们可以根据任务回调到哪个方法（是onPostExecute还是onCancelled）来决定是对UI进行正常的更新还是把对应的任务所占用的内存进行销毁等。</p>
+<ul>
+<li>使用 AsyncTask 容易导致内存泄漏。一旦把AsyncTask写成Activity的内部类的形式就很容易因为AsyncTask生命周期的不确定而导致Activity发生泄漏。</li>
+</ul>
+<h5 id="Getting-a-HandlerThread"><a href="#Getting-a-HandlerThread" class="headerlink" title="Getting a HandlerThread"></a>Getting a HandlerThread</h5><p>如果我们需要的是一个执行在工作线程，同时又能够处理队列中的复杂任务的功能，那么HandlerThread就再适合不过啦，它组合了Handler，MessageQueue，Looper实现了一个长时间运行的线程，不断的从队列中获取任务进行执行的功能。</p>
+<p>HandlerThread比较合适处理那些在工作线程执行，需要花费时间偏长的任务。我们只需要把任务发送给HandlerThread，然后就只需要等待任务执行结束的时候通知返回到主线程就好了。</p>
+<p>另外很重要的一点是，一旦我们使用了HandlerThread，需要特别注意给HandlerThread设置不同的线程优先级，CPU会根据设置的不同线程优先级对所有的线程进行调度优化。</p>
+<h5 id="Swimming-in-Threadpool"><a href="#Swimming-in-Threadpool" class="headerlink" title="Swimming in Threadpool"></a>Swimming in Threadpool</h5><p>线程池适合用在把任务进行分解，并发进行执行的场景。</p>
+<p>每开一个新的线程，都会耗费至少64K+的内存。为了能够方便的对线程数量进行控制，ThreadPoolExecutor为我们提供了初始化的并发线程数量，以及最大的并发数量进行设置。</p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_threadpool_4.png" alt="Threadpool"></p>
+<h5 id="The-Zen-of-IntentService"><a href="#The-Zen-of-IntentService" class="headerlink" title="The Zen of IntentService"></a>The Zen of IntentService</h5><p>IntentService继承自普通Service同时又在内部创建了一个HandlerThread，在<code>onHandlerIntent()</code>的回调里面处理扔到IntentService的任务。所以IntentService就不仅仅具备了异步线程的特性，还同时保留了Service不受主页面生命周期影响的特点。</p>
+<p>使用IntentService需要特别留意以下几点：</p>
+<ul>
+<li>首先，因为IntentService内置的是HandlerThread作为异步线程，所以每一个交给IntentService的任务都将以队列的方式逐个被执行到，一旦队列中有某个任务执行时间过长，那么就会导致后续的任务都会被延迟处理。</li>
+<li>其次，通常使用到IntentService的时候，我们会结合使用BroadcastReceiver把工作线程的任务执行结果返回给主UI线程。使用广播容易引起性能问题，我们可以使用LocalBroadcastManager来发送只在程序内部传递的广播，从而提升广播的性能。我们也可以使用<code>runOnUiThread()</code>快速回调到主UI线程。</li>
+<li>最后，包含正在运行的IntentService的程序相比起纯粹的后台程序更不容易被系统杀死，该程序的优先级是介于前台程序与纯后台程序之间的。</li>
+</ul>
+<h5 id="Threading-and-Loader"><a href="#Threading-and-Loader" class="headerlink" title="Threading and Loader"></a>Threading and Loader</h5><p>Loader的出现就是为了确保工作线程能够和Activity的生命周期保持一致,避免出现OOM问题。Loader 的使用比较麻烦，配合 Activity 和 Fragment 可以实现懒加载。</p>
+<h4 id="第六季"><a href="#第六季" class="headerlink" title="第六季"></a>第六季</h4><h5 id="App-Launch-time-101"><a href="#App-Launch-time-101" class="headerlink" title="App Launch time 101"></a>App Launch time 101</h5><p>当用户点击桌面图标开始，系统会立即为这个APP创建独立的专属进程，然后显示启动窗口，直到APP在自己的进程里面完成了程序的创建以及主线程完成了Activity的初始化显示操作，再然后系统进程就会把启动窗口替换成APP的显示窗口。</p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_6_launch_time_start_process.png" alt="Launch"></p>
+<p>我们能够控制并且需要特别关注的地方主要有三处：</p>
+<ul>
+<li>1）Activity的onCreate流程，特别是UI的布局与渲染操作，如果布局过于复杂很可能导致严重的启动性能问题。</li>
+<li>2）Application的onCreate流程，对于大型的APP来说，通常会在这里做大量的通用组件的初始化操作。</li>
+<li>3）目前有部分APP会提供自定义的启动窗口，这里可以做成品牌宣传界面或者是给用户提供一种程序已经启动的视觉效果。</li>
+</ul>
+<p>Android 为我们提供了很多的工具，帮助我们观察启动耗时的问题：</p>
+<ul>
+<li><strong>display time</strong>,从Android KitKat版本开始，Logcat中会输出从程序启动到某个Activity显示到画面上所花费的时间。这个方法比较适合测量程序的启动时间。</li>
+<li><strong>reportFullyDrawn</strong> :为了衡量这些异步加载资源所耗费的时间，我们可以在异步加载完毕之后调用<code>activity.reportFullyDrawn()</code>方法来告诉系统此时的状态，以便获取整个加载的耗时。</li>
+<li><strong>Method Tracing:</strong> 可以获得具体的耗时情况。</li>
+<li><strong>Systrace:</strong>我们可以在onCreate方法里面添加trace.beginSection()与trace.endSection()方法来声明需要跟踪的起止位置，系统会帮忙统计中间经历过的函数调用耗时，并输出报表。</li>
+</ul>
+<h5 id="App-Launch-Time-amp-Activity-Creation"><a href="#App-Launch-Time-amp-Activity-Creation" class="headerlink" title="App Launch Time &amp; Activity Creation"></a>App Launch Time &amp; Activity Creation</h5><p>以下两点经验可以帮助我们对Activity启动做性能优化：</p>
+<ul>
+<li>1）优化布局耗时：一个布局层级越深，里面包含需要加载的元素越多，就会耗费更多的初始化时间。关于布局性能的优化，这里就不展开描述了！</li>
+<li>2）异步延迟加载：一开始只初始化最需要的布局，异步加载图片，非立即需要的组件可以做延迟加载。</li>
+</ul>
+<h5 id="Smaller-APKs-A-Checklist"><a href="#Smaller-APKs-A-Checklist" class="headerlink" title="Smaller APKs: A Checklist"></a>Smaller APKs: A Checklist</h5><h6 id="减少程序图片资源的大小"><a href="#减少程序图片资源的大小" class="headerlink" title="减少程序图片资源的大小"></a>减少程序图片资源的大小</h6><ul>
+<li>确保在build.gradle文件中开启了<code>minifEnabled</code>与<code>shrinkResources</code>的属性，这两个属性可以帮助移除那些在程序中使用不到的代码与资源，帮助减少APP的安装包大小。</li>
+</ul>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_6_smaller_apks_gradle.png" alt="build"></p>
+<ul>
+<li>有选择性的提供对应分辨率的图片资源，系统会自动匹配最合适分辨率的图片并执行拉伸或者压缩的处理。android_perf_6_smaller_apks_dpi</li>
+</ul>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_6_smaller_apks_dpi.png" alt="build"></p>
+<ul>
+<li>在符合条件的情况下，使用Vertor Drawable替代传统的PNG/JPEG图片，能够极大的减少图片资源的大小。传统模式下，针对不同dpi的手机都需要提供一套PNG/JPEG的图片，而如果使用Vector Drawable的话，只需要一个XML文件即可。</li>
+</ul>
+<p>终于把性能优化典范这个系列看完，在工作中慢慢总结体会吧。</p>
 
       
     </div>
@@ -526,7 +633,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一季"><span class="nav-number">1.</span> <span class="nav-text">第一季</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RenderPerformance"><span class="nav-number">1.1.</span> <span class="nav-text">RenderPerformance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Overdraw"><span class="nav-number">1.2.</span> <span class="nav-text">Overdraw</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Memory-Churn-and-performance"><span class="nav-number">1.3.</span> <span class="nav-text">Memory Churn and performance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Garbage-Collection-in-Android"><span class="nav-number">1.4.</span> <span class="nav-text">Garbage Collection in Android</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一季"><span class="nav-number">1.</span> <span class="nav-text">第一季</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RenderPerformance"><span class="nav-number">1.1.</span> <span class="nav-text">RenderPerformance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Overdraw"><span class="nav-number">1.2.</span> <span class="nav-text">Overdraw</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Memory-Churn-and-performance"><span class="nav-number">1.3.</span> <span class="nav-text">Memory Churn and performance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Garbage-Collection-in-Android"><span class="nav-number">1.4.</span> <span class="nav-text">Garbage Collection in Android</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二季"><span class="nav-number">2.</span> <span class="nav-text">第二季</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Custom-Views-and-Performance"><span class="nav-number">2.1.</span> <span class="nav-text">Custom Views and Performance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Pre-scaling-Bitmaps"><span class="nav-number">2.2.</span> <span class="nav-text">Pre-scaling Bitmaps</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三季"><span class="nav-number">3.</span> <span class="nav-text">第三季</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Fun-with-ArrayMap"><span class="nav-number">3.1.</span> <span class="nav-text">Fun with ArrayMap</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第五季"><span class="nav-number">4.</span> <span class="nav-text">第五季</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Threading-Performance"><span class="nav-number">4.1.</span> <span class="nav-text">Threading Performance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Understanding-Android-Threading"><span class="nav-number">4.2.</span> <span class="nav-text">Understanding Android Threading</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Good-AsyncTask-Hunting"><span class="nav-number">4.3.</span> <span class="nav-text">Good AsyncTask Hunting</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Getting-a-HandlerThread"><span class="nav-number">4.4.</span> <span class="nav-text">Getting a HandlerThread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Swimming-in-Threadpool"><span class="nav-number">4.5.</span> <span class="nav-text">Swimming in Threadpool</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#The-Zen-of-IntentService"><span class="nav-number">4.6.</span> <span class="nav-text">The Zen of IntentService</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Threading-and-Loader"><span class="nav-number">4.7.</span> <span class="nav-text">Threading and Loader</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第六季"><span class="nav-number">5.</span> <span class="nav-text">第六季</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#App-Launch-time-101"><span class="nav-number">5.1.</span> <span class="nav-text">App Launch time 101</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#App-Launch-Time-amp-Activity-Creation"><span class="nav-number">5.2.</span> <span class="nav-text">App Launch Time & Activity Creation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Smaller-APKs-A-Checklist"><span class="nav-number">5.3.</span> <span class="nav-text">Smaller APKs: A Checklist</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#减少程序图片资源的大小"><span class="nav-number">5.3.1.</span> <span class="nav-text">减少程序图片资源的大小</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
