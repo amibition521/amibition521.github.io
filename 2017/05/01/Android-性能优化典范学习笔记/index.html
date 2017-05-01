@@ -111,7 +111,8 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="第一季主要讲 Android 性能优化涉及到的几个方面，包括：Android 的渲染机制、内存与GC。还有查看相关性能的工具以及提升性能的建议。 RenderPerformance我们都听到过 60fps与16ms 的概念，那么它们到底是什么呢？我们为什么用60fps来衡量 App 的性能呢？这是因为人眼与大脑之间的协作无法感知超过60fps的画面更新。 开发 App 的性能目标是保持60fps,">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/memory_mode_generation.png">
-<meta property="og:updated_time" content="2017-05-01T03:59:11.000Z">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_memory_gc_mode.png">
+<meta property="og:updated_time" content="2017-05-01T04:33:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 性能优化典范学习笔记">
 <meta name="twitter:description" content="第一季主要讲 Android 性能优化涉及到的几个方面，包括：Android 的渲染机制、内存与GC。还有查看相关性能的工具以及提升性能的建议。 RenderPerformance我们都听到过 60fps与16ms 的概念，那么它们到底是什么呢？我们为什么用60fps来衡量 App 的性能呢？这是因为人眼与大脑之间的协作无法感知超过60fps的画面更新。 开发 App 的性能目标是保持60fps,">
@@ -349,6 +350,27 @@
 <p>Overdraw 的发生大多数情况下是因为你的 UI 布局存在大量重叠的部分，还有是因为非必须的重叠背景。</p>
 <h5 id="Memory-Churn-and-performance"><a href="#Memory-Churn-and-performance" class="headerlink" title="Memory Churn and performance"></a>Memory Churn and performance</h5><p>Android 系统有一个 <strong>Generation Heap Memory</strong> 模型，如图所示，系统会根据内存中不同的内存数据类型分别执行不同的GC 操作。例如，最近刚分配的对象会放在Young Generation区域，这个区域的对象通常都是会快速被创建并且很快被销毁回收的，同时这个区域的GC操作速度也是比Old Generation区域的GC操作速度更快的。</p>
 <p><img src="/2017/05/01/Android-性能优化典范学习笔记/memory_mode_generation.png" alt="内存模型"></p>
+<p>导致GC频繁执行有两个原因：</p>
+<ul>
+<li>Memory Churn 内存抖动，主要是因为大量的对象被创建又在短时间内被回收。</li>
+<li>瞬间产生大量的对象会严重占用 Young Generation 的内存区域，当短时间内达到峰值时，内存空间不够，导致GC。</li>
+</ul>
+<p>我们可以通过 <strong>Memory Monitor </strong>工具查看短时间内发生了多少次的内存涨跌，也可以通过 <strong>Allocation Tracker</strong> 查看在短时间内，同一个栈内不断进出的相同对象。</p>
+<p>有几点建议，</p>
+<ul>
+<li>不要在for 循环里分配对象占用内存，如果需要的话，把对象的创建移到循环体外。</li>
+<li>避免在自定义 View 的 onDraw() 方法执行复杂的操作，避免创建对象。</li>
+<li>对于那些无法避免创建对象的情况，我们可以考虑创建对象池模型，通过对象池模型来解决频繁创建和销毁的问题，但是在使用完毕时，必须手动释放对象池中的对象。</li>
+</ul>
+<h5 id="Garbage-Collection-in-Android"><a href="#Garbage-Collection-in-Android" class="headerlink" title="Garbage Collection in Android"></a>Garbage Collection in Android</h5><p>Android里面是一个三级Generation的内存模型，最近分配的对象会存放在Young Generation区域，当这个对象在这个区域停留的时间达到一定程度，它会被移动到Old Generation，最后到Permanent Generation区域。</p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_memory_gc_mode.png" alt="Garbage Collection"></p>
+<p>为了寻找内存的性能问题，Android Studio提供了工具来帮助开发者。</p>
+<ul>
+<li><strong>Memory Monitor：</strong>查看整个app所占用的内存，以及发生GC的时刻，短时间内发生大量的GC操作是一个危险的信号。</li>
+<li><strong>Allocation Tracker：</strong>使用此工具来追踪内存的分配，前面有提到过。</li>
+<li><strong>Heap Tool：</strong>查看当前内存快照，便于对比分析哪些对象有可能是泄漏了的，</li>
+<li><strong>MAT</strong></li>
+</ul>
 
       
     </div>
@@ -504,7 +526,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一季"><span class="nav-number">1.</span> <span class="nav-text">第一季</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RenderPerformance"><span class="nav-number">1.1.</span> <span class="nav-text">RenderPerformance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Overdraw"><span class="nav-number">1.2.</span> <span class="nav-text">Overdraw</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Memory-Churn-and-performance"><span class="nav-number">1.3.</span> <span class="nav-text">Memory Churn and performance</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一季"><span class="nav-number">1.</span> <span class="nav-text">第一季</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RenderPerformance"><span class="nav-number">1.1.</span> <span class="nav-text">RenderPerformance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Overdraw"><span class="nav-number">1.2.</span> <span class="nav-text">Overdraw</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Memory-Churn-and-performance"><span class="nav-number">1.3.</span> <span class="nav-text">Memory Churn and performance</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Garbage-Collection-in-Android"><span class="nav-number">1.4.</span> <span class="nav-text">Garbage Collection in Android</span></a></li></ol></li></ol></div>
             
 
           </div>
