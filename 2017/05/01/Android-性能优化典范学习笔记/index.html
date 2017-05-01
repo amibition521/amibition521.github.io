@@ -115,7 +115,7 @@
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_3_arraymap_key_value.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_3_arraymap_two_array.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_looper.png">
-<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/Andorid-性能优化典范学习笔记/android_perf_5_thread_handler.png">
+<meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_handler.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_messagequeue.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_handlerthread.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_asynctask_cancel.png">
@@ -123,7 +123,7 @@
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_6_launch_time_start_process.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_6_smaller_apks_gradle.png">
 <meta property="og:image" content="http://yoursite.com/2017/05/01/Android-性能优化典范学习笔记/android_perf_6_smaller_apks_dpi.png">
-<meta property="og:updated_time" content="2017-05-01T12:08:15.000Z">
+<meta property="og:updated_time" content="2017-05-01T12:10:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android 性能优化典范学习笔记">
 <meta name="twitter:description" content="第一季主要讲 Android 性能优化涉及到的几个方面，包括：Android 的渲染机制、内存与GC。还有查看相关性能的工具以及提升性能的建议。 RenderPerformance我们都听到过 60fps与16ms 的概念，那么它们到底是什么呢？我们为什么用60fps来衡量 App 的性能呢？这是因为人眼与大脑之间的协作无法感知超过60fps的画面更新。 开发 App 的性能目标是保持60fps,">
@@ -417,7 +417,7 @@
 <h5 id="Understanding-Android-Threading"><a href="#Understanding-Android-Threading" class="headerlink" title="Understanding Android Threading"></a>Understanding Android Threading</h5><p><strong>Looper：</strong> 能够确保线程持续存活并且可以不断的从任务队列中获取任务并进行执行。</p>
 <p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_looper.png" alt="Looper"></p>
 <p><strong>Handler:</strong> 能够帮助实现队列任务的管理，不仅仅能够把任务插入到队列的头部，尾部，还可以按照一定的时间延迟来确保任务从队列中能够来得及被取消掉。</p>
-<p><img src="/2017/05/01/Android-性能优化典范学习笔记/Andorid-性能优化典范学习笔记/android_perf_5_thread_handler.png" alt="Handler"></p>
+<p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_handler.png" alt="Handler"></p>
 <p><strong>MessageQueue：</strong> 使用 Intent、Message、Runnable 作为任务的载体在不同的线程中传递。</p>
 <p><img src="/2017/05/01/Android-性能优化典范学习笔记/android_perf_5_thread_messagequeue.png" alt="MessageQueue"></p>
 <p>上面三个组件打包在一起进行协作，就是 <strong>Handler Thread</strong></p>
