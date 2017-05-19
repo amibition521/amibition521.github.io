@@ -110,7 +110,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/05/19/2017年5月Android-高级开发工程师的面试体会/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="截止到2017年5月12日，持续了半个多月的找工作大业终于结束啦，在这个半个月经历了大大小小十几场面试，面试的企业有智能硬件、即时通讯的、销售管理软件相关的、线上教育相关的、资讯相关的。因为我自己也不确定接下来自己想去什么方向，只是单纯的想找到一个自己没有接触过的领域，所有简历投了很多跟自己本身没有相关的行业。 首先交代一下我的背景，我所在的公司是一家上市公司，公司规模很大，我所出的团队是智能硬件">
-<meta property="og:updated_time" content="2017-05-19T09:18:45.000Z">
+<meta property="og:updated_time" content="2017-05-19T15:47:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2017年5月Android 高级开发工程师的面试体会">
 <meta name="twitter:description" content="截止到2017年5月12日，持续了半个多月的找工作大业终于结束啦，在这个半个月经历了大大小小十几场面试，面试的企业有智能硬件、即时通讯的、销售管理软件相关的、线上教育相关的、资讯相关的。因为我自己也不确定接下来自己想去什么方向，只是单纯的想找到一个自己没有接触过的领域，所有简历投了很多跟自己本身没有相关的行业。 首先交代一下我的背景，我所在的公司是一家上市公司，公司规模很大，我所出的团队是智能硬件">
@@ -392,6 +392,7 @@
 <li>线程和进程的区别？ — 这个一个多么经典的问题啊，我回答的语无伦次。</li>
 <li>介绍下 MVC MVP MVVM ?</li>
 <li>Volley 源码的解析？</li>
+<li>Tcp Udp 的区别？</li>
 <li>常用的设计模式？— 单例模式(饿汉式、懒汉式、DoubleCheck、静态内部类、枚举)，观察者模式(写出代码)，工厂模式。</li>
 </ol>
 <p>总结一下，公司的领导很不错，平易近人。</p>
@@ -409,7 +410,146 @@
 <li>OkHttp 缓存的原理？— 这个问题得查查</li>
 </ol>
 <p>这是我四月底的最后一家面试，在这半个月里真的感觉到自己知识储备的不足，打算找工作的事情先放放，安心学习一个月再继续找，有点疲惫啦。</p>
-<h4 id="情怀"><a href="#情怀" class="headerlink" title="情怀"></a>情怀</h4><p>这是我在接到这家公司面试邀请时首先想到的词，面试我的是一个身材魁梧的 leader,一看就经常健身，从他的面相和面试过程来看，我知道我有戏。 </p>
+<h4 id="情怀"><a href="#情怀" class="headerlink" title="情怀"></a>情怀</h4><p>这是我在接到这家公司面试邀请时首先想到的词，面试我的是一个身材魁梧的 leader,一看就经常健身，从他的面相和面试过程来看，我知道我有戏。 整个面试过程就是两个男人的单挑。😄</p>
+<p>面试题如下：</p>
+<ol>
+<li>说下你最熟悉的技能吧？— 自定义View  三个方法的作用是什么？</li>
+<li>View 和 SurfaceView 的区别？详细说一下 SurfaceView ? 硬件加速？</li>
+<li>Android Animations 的 Property Animation ? 插值器？阻尼？</li>
+<li>Invalid 和 Postvalid 的区别？</li>
+<li>ANR？</li>
+<li>BroadcastReceiver ?— 有序广播 ？原题是：两个广播接收器同时对一个 action 进行监听，如何保证第一个比第二个先监听到？有两种方式：设置优先级，有序广播。</li>
+<li>图片缓存的处理方式？<code>inBitmap</code> 属性？</li>
+<li>java 的值传递和引用传递？实参和行参？</li>
+<li>你属性什么设计模式？— 我们为什么要用设计模式？— 这个问题我回答的很是无语啊。</li>
+<li>面向对象的开闭原则？ — 我还能说什么，我这是没记住啊。</li>
+<li>写一下冒泡排序？— 这个我用冒泡排序的优化方式，结果这位大哥竟然没看明白，我俩就这个算法讨论了大约10分钟，弄的我都开始怀疑人生了，我明明早上刚刚看过的啊。</li>
+</ol>
+<p>总结一下，那个哥们还是很不错的，很亲切的一个人，上午面试完，晚上就给结果啦，还是很有效率的。下次有机会再合作吧。</p>
+<h4 id="百鸟之王"><a href="#百鸟之王" class="headerlink" title="百鸟之王"></a>百鸟之王</h4><p>这家公司的面试邀请得感谢我的媳妇，是她帮我投递的，之前我也投递过，但是没过，媳妇的第二次投递竟然给我一个面试的机会，很兴奋。早早的来到公司前台，在吧台填好表格就开始做面试题，足足的四页啊，如下：</p>
+<ol>
+<li>MediaPlayer 的生命周期？</li>
+<li>设计一个音乐播放器？写下设计思路，进程间通信？</li>
+<li>Service 的启动方式？有啥区别？ IntentService?</li>
+<li>自定义 View ? SurfaceView ？SurfaceHolder?</li>
+<li>Activity、Fragment、FragmentActivity 的生命周期？</li>
+<li>Android 的多线程？</li>
+<li>内存泄漏的原因？检测内存的工具？— MAT</li>
+</ol>
+<p>写完笔试题，进入面试环节，跟一个小组长面试了大约1个小时，主要问题如下：</p>
+<ol>
+<li>BLE 从搜索、连接到数据解析的过程？BluetoothGatt? — 点到即止。</li>
+<li>get/post 方法的区别？</li>
+<li>多线程下载？断点续传的实现？</li>
+<li>MQTT 协议？如果不用 MQTT，该如何实现 IM 通讯？— Socket</li>
+<li>React 的生命周期？</li>
+<li>WebView 的优化？</li>
+</ol>
+<p>很有很多问题，但我想不起来，暂时记得就只有这么多了，面试了两轮之后，让我回去等消息。晚上打电话约明天下周二面试，很期待啊。但不得不说，这一天我的状态真的差到爆啊，语无伦次，前一句说了什么我自己都不知道。就是在这样的过程中结束了我的第三轮技术面试。面试内容如下：</p>
+<ol>
+<li>选一个你比较擅长的？咱们来聊一聊？— 但是我心中是想了很多的，但是看见面试题第一篇有 Service，我说那就说说 Service吧。他把东西方法开始跟我侃 Service.</li>
+<li>前台Service、Service、IntentService 的区别？— </li>
+<li>Android 中五大进程？</li>
+<li>为什么要有 前台 Service ? 如何保证 Service 不被杀死？ 进程保活的方式有哪些？</li>
+<li>Service 和Activity 是否处于同一个线程中？在 Service 中是否可以显示内容？toast snackBar dialaog？如果 我没有 Activity ，那么我是否可以在 Service 中显示内容？—WindowManager.</li>
+<li>Binder 机制？AIDL 的底层实现是什么样的？为什么 AIDL 的效率比其他方式高？如果两个通信的进程，其中一个被杀死啦，那么另一个线程会怎样？</li>
+<li>自定义 View ？ SurfaceView 的区别？三个过程的目的是什么？</li>
+<li>ListView 的底层实现？— RecycleBin 机制。getView () 中的 ConvertView ？ViewHolder 的作用？多类型的 item 该如何处理？</li>
+<li>为什么离职？—-在回答这个问题的时候一定要灵活。切不可说些有的没的，一定不要让面试官感觉到你的抱怨的成分。</li>
+<li>讲讲你的软件项目管理的相关东西吧？—— 这个其实是他在给我讲。</li>
+</ol>
+<p>我俩聊了两个小时，这个过程我和他都有交流，我真切的感觉这家伙却是懂得东西很多，已经深入到 FrameWork 层，懂得东西比我透彻。最后让我等一会，过一会进来一个Hr，主要问了为什么离职？期望工资最低是多少？介不介意加班？(她以这么问，我就感觉很坑啊)有什么想问的她？我们的谈话就结束了。最后简单的在VP 那聊了一会我就出来。此时出来已经是四点多了，我从一点半说到四点，我真的佩服我自己啦。希望有一个好的结果。</p>
+<p>到此为止，我所有的面试过程就结束啦。最后感谢公司同事的帮助和支持。</p>
+<p>下面是我在刷面试题遇到的总结比较全的相关问题，我觉得如果都弄懂了，那么高级没问题啦。</p>
+<p>Android基础</p>
+<ol>
+<li>View的绘制流程；自定义View如何考虑机型适配；自定义View的事件分发机制；View和ViewGroup分别有哪些事件分发相关的回调方法；自定义View如何提供获取View属性的接口；</li>
+<li>Art和Dalvik对比；虚拟机原理，如何自己设计一个虚拟机(内存管理，类加载，双亲委派)；JVM内存模型及类加载机制；内存对象的循环引用及避免</li>
+<li>内存回收机制与GC算法(各种算法的优缺点以及应用场景)；GC原理时机以及GC对象；内存泄露场景及解决方法；OOM的避免及解决方法</li>
+<li>四大组件及生命周期；ContentProvider的权限管理(读写分离，权限控制-精确到表级，URL控制)；Activity的四种启动模式对比；Activity状态保存于恢复</li>
+<li>Fragment生命周期；Fragment状态保存</li>
+<li>startActivityForResult是哪个类的方法，在什么情况下使用，如果在Adapter中使用应该如何解耦</li>
+<li>AsyncTask原理及不足;IntentService原理</li>
+<li>AstncTask+HttpClient与AsyncHttpClient有什么区别</li>
+<li>如何保证一个后台服务不被杀死；比较省电的方式是什么</li>
+<li>如何通过广播拦截和abort一条短信；广播是否可以请求网络；广播引起anr的时间限制</li>
+<li>进程间通信，AIDL</li>
+<li>Handler机制及底层实现</li>
+<li>Binder机制及底层实现</li>
+<li>ApplicationContext和ActivityContext的区别</li>
+<li>一张Bitmap所占内存以及内存占用的计算</li>
+<li>对于应用更新这块是如何做的？(灰度，强制更新，分区域更新)</li>
+<li>混合开发，RN，weex，H5，小程序(做Android的了解一些前端js等还是很有好处的)</li>
+<li>说一款你认为当前比较火的应用并设计(直播APP)</li>
+</ol>
+<h3 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h3><ol>
+<li>集合类以及集合框架；HashMap与HashTable实现原理，线程安全性，hash冲突及处理算法；ConcurrentHashMap</li>
+<li>进程和线程的区别；多线程与线程池</li>
+<li>数据一致性如何保证；Synchronized关键字，类锁，方法锁，重入锁</li>
+<li>同步的方法；多进程开发以及多进程应用场景</li>
+<li>服务器只提供数据接收接口，在多线程或多进程条件下，如何保证数据的有序到达</li>
+<li>ThreadLocal原理，实现及如何保证Local属性</li>
+<li>String StringBuilder StringBuffer对比</li>
+<li>接口与回调；回调的原理；写一个回调demo；</li>
+<li>泛型原理，举例说明；解析与分派</li>
+<li>抽象类与接口的区别；应用场景；抽象类是否可以没有方法和属性</li>
+<li>静态属性和静态方法是否可以被继承？是否可以被重写？原因</li>
+<li>修改对象A的equals方法的签名，那么使用HashMap存放这个对象实例的时候，会调用哪个equals方法</li>
+</ol>
+<h3 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h3><ol>
+<li>堆和栈在内存中的区别是什么(数据结构方面以及实际实现方面)</li>
+<li>最快的排序算法是哪个？给阿里2万多名员工按年龄排序应该选择哪个算法？堆和树的区别；写出快排代码；链表逆序代码</li>
+<li>求1000以内的水仙花数以及40亿以内的水仙花数</li>
+<li>子串包含问题(KMP 算法)写代码实现</li>
+<li>万亿级别的两个URL文件A和B，如何求出A和B的差集C,(Bit映射-&gt;hash分组-&gt;多文件读写效率-&gt;磁盘寻址以及应用层面对寻址的优化)</li>
+<li>蚁群算法与蒙特卡洛算法</li>
+<li>写出你所知道的排序算法及时空复杂度，稳定性</li>
+<li>百度POI中如何试下查找最近的商家功能(坐标镜像+R树)</li>
+</ol>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ol>
+<li>死锁的四个必要条件</li>
+<li>常见编码方式；utf-8编码中的中文占几个字节；int型几个字节</li>
+<li>实现一个Json解析器(可以通过正则提高速度)</li>
+<li>MVC MVP MVVM; 常见的设计模式；写出观察者模式的代码</li>
+<li>TCP的3次握手和四次挥手；TCP与UDP的区别</li>
+<li>HTTP协议；HTTP1.0与2.0的区别；HTTP报文结构</li>
+<li>HTTP与HTTPS的区别以及如何实现安全性</li>
+</ol>
+<h2 id="非技术问题汇总"><a href="#非技术问题汇总" class="headerlink" title="非技术问题汇总"></a>非技术问题汇总</h2><ol>
+<li>研究比较深入的领域有哪些</li>
+<li>对业内信息的关注渠道有哪些</li>
+<li>最近都读哪些书</li>
+<li>自己最擅长的技术点，最感兴趣的技术领域和技术点</li>
+<li>项目中用了哪些开源库，如何避免因为引入开源库而导致的安全性和稳定性问题</li>
+<li>实习过程中做了什么，有什么产出</li>
+<li>5枚硬币，2正3反如何划分为两堆然后通过翻转让两堆中正面向上的硬币和反面向上的硬币个数相同</li>
+<li>时针走一圈，时针分针重合几次</li>
+<li>N * N的方格纸,里面有多少个正方形</li>
+<li>现在下载速度很慢,试从网络协议的角度分析原因,并优化(网络的5层都可以涉及)</li>
+</ol>
+<h2 id="HR问题汇总"><a href="#HR问题汇总" class="headerlink" title="HR问题汇总"></a>HR问题汇总</h2><ol>
+<li>讲一件你印象最深的一件事情</li>
+<li>介绍一个你影响最深的项目</li>
+<li>介绍你最热爱最擅长的专业领域</li>
+<li>公司实习最大的收获是什么</li>
+<li>自己的优点和缺点是什么？举例说明</li>
+<li>你的学习方法是什么样的？实习过程中如何学习？实习项目中遇到的最大困难是什么以及如何解决的</li>
+<li>说一件最能证明你能力的事情</li>
+<li>项目中遇到最大的困难是什么？如何解决的</li>
+<li>你的职业规划以及个人目标；未来发展路线及求职定位</li>
+<li>评价下自己，评价下自己的技术水平，个人代码量如何</li>
+<li>通过哪些渠道了解的招聘信息，其他同学都投了哪些公司</li>
+<li>业余都有哪些爱好</li>
+<li>当前的offer状况；如果BATH都给了offer该如何选</li>
+<li>你对一份工作更看重哪些方面？平台，技术，氛围，城市，money</li>
+<li>理想薪资范围；杭州岗和北京岗选哪个</li>
+<li>理想中的工作环境是什么</li>
+<li>实习过程中周围同事/同学有哪些值得学习的地方</li>
+<li>家人对你的工作期望及自己的工作期望</li>
+<li>若上司在公开会议上误会你了，该如何解决</li>
+<li>是否可以实习，可以实习多久</li>
+<li>你看中公司的什么？或者公司的那些方面最吸引你？</li>
+</ol>
 
       
     </div>
@@ -565,7 +705,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#出国手机小号App"><span class="nav-number">1.</span> <span class="nav-text">出国手机小号App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#国外的喜马拉雅"><span class="nav-number">2.</span> <span class="nav-text">国外的喜马拉雅</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#国内在线教育App"><span class="nav-number">3.</span> <span class="nav-text">国内在线教育App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#销售管理App"><span class="nav-number">4.</span> <span class="nav-text">销售管理App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相机伴侣"><span class="nav-number">5.</span> <span class="nav-text">相机伴侣</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大裤衩"><span class="nav-number">6.</span> <span class="nav-text">大裤衩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#情怀"><span class="nav-number">7.</span> <span class="nav-text">情怀</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#出国手机小号App"><span class="nav-number">1.</span> <span class="nav-text">出国手机小号App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#国外的喜马拉雅"><span class="nav-number">2.</span> <span class="nav-text">国外的喜马拉雅</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#国内在线教育App"><span class="nav-number">3.</span> <span class="nav-text">国内在线教育App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#销售管理App"><span class="nav-number">4.</span> <span class="nav-text">销售管理App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相机伴侣"><span class="nav-number">5.</span> <span class="nav-text">相机伴侣</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大裤衩"><span class="nav-number">6.</span> <span class="nav-text">大裤衩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#情怀"><span class="nav-number">7.</span> <span class="nav-text">情怀</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#百鸟之王"><span class="nav-number">8.</span> <span class="nav-text">百鸟之王</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java基础"><span class="nav-number"></span> <span class="nav-text">Java基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构与算法"><span class="nav-number"></span> <span class="nav-text">数据结构与算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number"></span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非技术问题汇总"><span class="nav-number"></span> <span class="nav-text">非技术问题汇总</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HR问题汇总"><span class="nav-number"></span> <span class="nav-text">HR问题汇总</span></a></div>
             
 
           </div>
