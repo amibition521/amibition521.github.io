@@ -1,0 +1,746 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="截止到2017年5月12日，持续了半个多月的找工作大业终于结束啦，在这个半个月经历了大大小小十几场面试，面试的企业有智能硬件、即时通讯的、销售管理软件相关的、线上教育相关的、资讯相关的。因为我自己也不确定接下来自己想去什么方向，只是单纯的想找到一个自己没有接触过的领域，所有简历投了很多跟自己本身没有相关的行业。 首先交代一下我的背景，我所在的公司是一家上市公司，公司规模很大，我所出的团队是智能硬件">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2017年5月Android 高级开发工程师的面试体会">
+<meta property="og:url" content="http://yoursite.com/2017/05/19/2017年5月Android-高级开发工程师的面试体会/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="截止到2017年5月12日，持续了半个多月的找工作大业终于结束啦，在这个半个月经历了大大小小十几场面试，面试的企业有智能硬件、即时通讯的、销售管理软件相关的、线上教育相关的、资讯相关的。因为我自己也不确定接下来自己想去什么方向，只是单纯的想找到一个自己没有接触过的领域，所有简历投了很多跟自己本身没有相关的行业。 首先交代一下我的背景，我所在的公司是一家上市公司，公司规模很大，我所出的团队是智能硬件">
+<meta property="og:updated_time" content="2017-05-19T09:16:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2017年5月Android 高级开发工程师的面试体会">
+<meta name="twitter:description" content="截止到2017年5月12日，持续了半个多月的找工作大业终于结束啦，在这个半个月经历了大大小小十几场面试，面试的企业有智能硬件、即时通讯的、销售管理软件相关的、线上教育相关的、资讯相关的。因为我自己也不确定接下来自己想去什么方向，只是单纯的想找到一个自己没有接触过的领域，所有简历投了很多跟自己本身没有相关的行业。 首先交代一下我的背景，我所在的公司是一家上市公司，公司规模很大，我所出的团队是智能硬件">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/19/2017年5月Android-高级开发工程师的面试体会/"/>
+
+
+
+
+
+  <title> 2017年5月Android 高级开发工程师的面试体会 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/2017年5月Android-高级开发工程师的面试体会/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="喝咖啡的鱼儿">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                2017年5月Android 高级开发工程师的面试体会
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-19T13:39:10+08:00">
+                2017-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>截止到2017年5月12日，持续了半个多月的找工作大业终于结束啦，在这个半个月经历了大大小小十几场面试，面试的企业有智能硬件、即时通讯的、销售管理软件相关的、线上教育相关的、资讯相关的。因为我自己也不确定接下来自己想去什么方向，只是单纯的想找到一个自己没有接触过的领域，所有简历投了很多跟自己本身没有相关的行业。</p>
+<p>首先交代一下我的背景，我所在的公司是一家上市公司，公司规模很大，我所出的团队是智能硬件团队，我可是这个团队的元老级别的人(白痴)，我主要负责 Android 端 低功耗蓝牙的开发，背景交代完毕。</p>
+<p>我们就按时间顺序依次说说我面试过的10加企业。</p>
+<h4 id="出国手机小号App"><a href="#出国手机小号App" class="headerlink" title="出国手机小号App"></a>出国手机小号App</h4><p>这是一个刚刚成立的创业公司，团队正在快速的扩张，作为我开始投简历的第一个家公司，我是没有抱着多大希望的，后面再说这种观点真的是一种错误。在面试过程中，主要问了一下<strong>低功耗蓝牙(BLE)</strong>相关的东西。自己虽然经常在使用，但是具体的参数和实现形式不是很了解，自己回答的很不好，完全达不到用人单位的要求。</p>
+<p>下面大体总结一下关于低功耗蓝牙的相关问题：</p>
+<p>1.BLE 的配对方式有哪些？</p>
+<p>2.BLE 每秒钟传输速率是多少？数据传输的形式有哪些？(Byte[])，低功耗蓝牙的传输通道有哪三种？有一个2kb的数据该如何传输？</p>
+<p>3.低功耗蓝牙的优缺点？低功耗蓝牙与经典蓝牙的区别？</p>
+<p>4.低功耗蓝牙如何做设备搜索？如何区分自己公司的产品？(UUID)，如何防止手机能够连接上设备？(将通用的UUID做成自己公司特有的)</p>
+<p>5.低功耗蓝牙的固件升级功能如何实现？(OTA/DFU),实现的流程？</p>
+<p>6.针对不同厂家的ROM，蓝牙模块有哪些差异？你是如何解决这些差异问题的？</p>
+<h4 id="国外的喜马拉雅"><a href="#国外的喜马拉雅" class="headerlink" title="国外的喜马拉雅"></a>国外的喜马拉雅</h4><p>这个一家CEO来自 Google 的创业团队，倡导的理念是要么快要么死。唯一让我感到很吃惊的是他们只有 Android 客户端，完全不在国内应用市场上线，只做 google play。这是我真佩服他们的地方，当天去面试时，面试基本之前没看过我的简历，拿着电脑从头开始看，边看边问，问的也没什么章法，我答的也没什么逻辑。其中有几个问题，还是影响到我了，</p>
+<ul>
+<li>你在项目中有没有什么可以说出来的 Case?或者让你感到自豪的点？— 这么开放的问题，我回答的很失败，完全没有get 到他的点。</li>
+<li>你用过我们公司的App吗？或者说你对我们公司了解吗？— 我之前完完全全没有去了解过这家公司，他们所从事的事情我也是在拉勾上简单看了一下，没有进入到公司的主业去看看。所以奉劝各位，在面试一家公司之前，一定要去看看公司的主页，了解一下人家公司是干嘛的。</li>
+</ul>
+<h4 id="国内在线教育App"><a href="#国内在线教育App" class="headerlink" title="国内在线教育App"></a>国内在线教育App</h4><p>这是一家处于北京胡同里的创业公司，首先这个公司的Hr是真不错，在面试之前会和你讲很多公司的业绩和主营业务，说公司的开发团队是很有极客范的一群人，详细的询问你离职的原因和期望工资，她会根据你说的内容深入的了解你这个人。所以有些话还是不要说的太满。经过九曲十八绕我终于来到了这个据说“有情怀的公司”。面试官主要问了我下面几个问题：</p>
+<p>1.大学里是如何学习 Android 的？</p>
+<p>2.Activity 的生命周期？Activity 之间互相跳转时的生命周期？Activity 和Dialog 之间跳转时的生命周期？Activity 加载 Fragment 时的生命周期？</p>
+<p>3.List 里的参数为啥是 Integer 类型不能是int ? — 引用类型和基本类型</p>
+<p>4.弱引用？</p>
+<p>5.数组和链表的区别？— 在内存的分布。</p>
+<p>6.gradle 是否了解？</p>
+<p>7.如何看到 React Native ？</p>
+<p>8.AsyncTask 是顺序执行的还是并发执行的？— 这个问题后来通过看源码弄明白了。</p>
+<p>9.面向对象的思想？详细说下多态</p>
+<p>总体感觉，问的问题还是偏向于基础的，基础不牢地动山摇啊。</p>
+<h4 id="销售管理App"><a href="#销售管理App" class="headerlink" title="销售管理App"></a>销售管理App</h4><p>这是业内很有名的公司，我在刚开始做App 的时候就听说过，进去面试的时候，先让我做了大约4页的面试题，我是请假去的，所以草草的写完啦，之后被领到一个中午热饭的地方进行面试，不得不说那个味啊，真是… 面试的过程中面试官看我做的页面相关的东西很少，没怎么上心的问我，简单的应付一下就让我走了，不得不说真的很不负责任，浪费大家时间。下面说说笔试题的一些内容吧。</p>
+<p>1.抽象类和接口的区别</p>
+<p>2.内部类 — 静态内部类和成员内部类</p>
+<p>3.死锁的条件？</p>
+<p>4.ArrayList 中元素的删除操作？— 用 Iterator 的 remove() 方法，不能直接调用 arrayList 的 remove()方法。</p>
+<p>5.自己设计一个图片缓存框架？</p>
+<p>6.LruCache ? 为什么要用 LinkedHashMap?</p>
+<p>7.ListView 的优化？图片错位？滑动卡顿？检测内存的指标的工具？</p>
+<p>8.GreenDao 的原理是什么？注解是什么？</p>
+<p>9.ListView 的 item 中包含 CheckBox，如何获得手指点击区域的 position？也就说用什么方法可以获得点击的是第几个 item.</p>
+<h4 id="相机伴侣"><a href="#相机伴侣" class="headerlink" title="相机伴侣"></a>相机伴侣</h4><p>这是第一个给我 offer 的公司，老板说了一句很打动我的话：有眼缘。曾给我打过两次电话，我都以个人原因拒绝啦，差点就去了。公司不大，面试的地方在楼道里，是不是很搞笑，但就是这样的环境，我们竟然聊了一个多小时。面试的问题如下：</p>
+<ol>
+<li>BLE在不同ROM的适配问题。</li>
+</ol>
+<ol>
+<li>Handler 机制？如何避免内存泄漏？— removeCallbacksAndMessage()，只要 MessageQueue 中没有 Message 待处理，那么就不会引起内存泄漏。</li>
+<li>如何正确的停滞一个 Thread ?— while 中的标志中位。</li>
+<li>Android 中的多线程？ AsyncTask IntentService HandlerThread ThreadPool</li>
+<li>线程和进程的区别？ — 这个一个多么经典的问题啊，我回答的语无伦次。</li>
+<li>介绍下 MVC MVP MVVM ?</li>
+<li>Volley 源码的解析？</li>
+<li>常用的设计模式？— 单例模式(饿汉式、懒汉式、DoubleCheck、静态内部类、枚举)，观察者模式(写出代码)，工厂模式。</li>
+</ol>
+<p>总结一下，公司的领导很不错，平易近人。</p>
+<h4 id="大裤衩"><a href="#大裤衩" class="headerlink" title="大裤衩"></a>大裤衩</h4><p>这是我人生中第二次进入大裤衩，那份激动真的是难以言表，我明明知道它不会要我，但我还是想去试试，给自己一点希望。经过层层开条安检，终于来到了34层，首先让我们做了一份面试题，当我见到这份面试题的时候，我哭的心都有了，这里面的题每一道我都见过或者说我曾经都敲过。给了40分钟，最后没有做完就被揪去面试。结果可想而知啦。</p>
+<ol>
+<li>最大不重复子串— KMP (原题啊— 我还曾经在电脑上敲过，此时哭晕在厕所)</li>
+<li>Activity 的生命周期？— 重点在 onRestart() 起始的位置。</li>
+<li>Service 的启动方式？</li>
+<li>Android 中的多线程？</li>
+<li>写出常用的排序算法？二分查找算法？</li>
+<li>Https 的原理是什么？网络请求是一个什么过程？</li>
+<li>蓝牙的电量优化？</li>
+<li>MVP 中 Presenter 的作用？是否可以共用？</li>
+<li>读过 图片缓存框架的源码？</li>
+<li>OkHttp 缓存的原理？— 这个问题得查查</li>
+</ol>
+<p>这是我四月底的最后一家面试，在这半个月里真的感觉到自己知识储备的不足，打算找工作的事情先放放，安心学习一个月再继续找，有点疲惫啦。</p>
+<h4 id="情怀"><a href="#情怀" class="headerlink" title="情怀"></a>情怀</h4><p>这是我在接到这家公司面试邀请时首先想到的词，面试我的是一个身材魁梧的 leader,一看就经常健身，从他的面相和面试过程来看，我知道我有戏。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/18/Volley框架源码解析/" rel="prev" title="Volley框架源码解析">
+                Volley框架源码解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/header.jpg"
+               alt="喝咖啡的鱼儿" />
+          <p class="site-author-name" itemprop="name">喝咖啡的鱼儿</p>
+           
+              <p class="site-description motion-element" itemprop="description">The One Who Wants to Wear a Crown Must Bear the Weight.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#出国手机小号App"><span class="nav-number">1.</span> <span class="nav-text">出国手机小号App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#国外的喜马拉雅"><span class="nav-number">2.</span> <span class="nav-text">国外的喜马拉雅</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#国内在线教育App"><span class="nav-number">3.</span> <span class="nav-text">国内在线教育App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#销售管理App"><span class="nav-number">4.</span> <span class="nav-text">销售管理App</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相机伴侣"><span class="nav-number">5.</span> <span class="nav-text">相机伴侣</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大裤衩"><span class="nav-number">6.</span> <span class="nav-text">大裤衩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#情怀"><span class="nav-number">7.</span> <span class="nav-text">情怀</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">喝咖啡的鱼儿</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
