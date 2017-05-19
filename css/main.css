@@ -1692,7 +1692,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #9cb3f6;
+  background: #cd9cff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2477,7 +2477,7 @@ pre .javascript .function {
 .header {
   position: relative;
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .header {
@@ -2537,7 +2537,7 @@ pre .javascript .function {
   }
 }
 .container .main-inner {
-  width: 80%;
+  width: 90%;
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .container .main-inner {
