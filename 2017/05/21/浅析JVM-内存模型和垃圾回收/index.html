@@ -111,7 +111,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="前段时间在面试复习的时候，看了些 jvm 相关的文章，自己做一些整理。 内存模型JVM 的内存区域总共分为5大块，包括：方法区、堆区、程序计数器、虚拟机栈、本地方法栈；如图所示：  JVM 主要区域概要 堆  Heap 该区域主要用来存放所有的对象和数组。  方法区 存储已被虚拟机加载过的 类信息、常量、静态变量、即时编译的代码等数据，为线程共享。  程序计数器 当前线程所执行的字节码的行号指示器">
 <meta property="og:image" content="http://yoursite.com/2017/05/21/浅析JVM-内存模型和垃圾回收/jvm内存模型.png">
-<meta property="og:updated_time" content="2017-05-21T05:17:54.000Z">
+<meta property="og:updated_time" content="2017-05-21T05:25:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅析JVM 内存模型和垃圾回收">
 <meta name="twitter:description" content="前段时间在面试复习的时候，看了些 jvm 相关的文章，自己做一些整理。 内存模型JVM 的内存区域总共分为5大块，包括：方法区、堆区、程序计数器、虚拟机栈、本地方法栈；如图所示：  JVM 主要区域概要 堆  Heap 该区域主要用来存放所有的对象和数组。  方法区 存储已被虚拟机加载过的 类信息、常量、静态变量、即时编译的代码等数据，为线程共享。  程序计数器 当前线程所执行的字节码的行号指示器">
@@ -360,7 +360,7 @@
 <p>虚拟机执行 Native 方法时使用，HotSpot 虚拟机的本地方法栈和虚拟机栈合二为一。</p>
 </li>
 </ul>
-<h4 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h4><h4 id="内存溢出-1"><a href="#内存溢出-1" class="headerlink" title="内存溢出"></a>内存溢出</h4><p>发生内存泄漏的根本原因是：长生命周期的对象持有短生命周期对象的引用就有可能发生内存泄漏，尽管短生命周期对象已经不再需要，但是因为长生命周期持有它的引用而导致不能被回收，这就是Java中内存泄漏的发生场景。下面是几类常见的场景：</p>
+<h4 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h4><h4 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h4><p>发生内存泄漏的根本原因是：长生命周期的对象持有短生命周期对象的引用就有可能发生内存泄漏，尽管短生命周期对象已经不再需要，但是因为长生命周期持有它的引用而导致不能被回收，这就是Java中内存泄漏的发生场景。下面是几类常见的场景：</p>
 <ol>
 <li><p>静态集合类引起的内存泄漏</p>
 <p>像HashMap、Vector等的使用最容易出现内存泄露，这些静态变量的生命周期和应用程序一致，他们所引用的所有的对象Object也不能被释放，因为他们也将一直被Vector等引用着。</p>
@@ -569,7 +569,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#内存模型"><span class="nav-number">1.</span> <span class="nav-text">内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#JVM-主要区域概要"><span class="nav-number">1.1.</span> <span class="nav-text">JVM 主要区域概要</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存溢出"><span class="nav-number">2.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存溢出-1"><span class="nav-number">3.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存回收机制"><span class="nav-number">4.</span> <span class="nav-text">内存回收机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-回收算法"><span class="nav-number">4.1.</span> <span class="nav-text">1.1 回收算法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#内存模型"><span class="nav-number">1.</span> <span class="nav-text">内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#JVM-主要区域概要"><span class="nav-number">1.1.</span> <span class="nav-text">JVM 主要区域概要</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存溢出"><span class="nav-number">2.</span> <span class="nav-text">内存溢出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存泄漏"><span class="nav-number">3.</span> <span class="nav-text">内存泄漏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存回收机制"><span class="nav-number">4.</span> <span class="nav-text">内存回收机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-回收算法"><span class="nav-number">4.1.</span> <span class="nav-text">1.1 回收算法</span></a></li></ol></li></ol></div>
             
 
           </div>
