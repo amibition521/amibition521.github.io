@@ -1,0 +1,885 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="我们从15年底开始使用 RN，版本号为0.16,到2月底为止，我们完成了三次版本的升级，最新版本为0.35。不得不说升级 RN 真是一件很费时费力的事情，期间版本变动较大。 我下面说一下我和我的团队在使用 RN 的一些问题，很可能我要说的这么问题，现在已经被解决啦。 基础知识React 的生命周期RN 中的每一个控件都是单独的，都有自己的生命周期，如图所示：  如图，可以把组件生命周期大致分为三个">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative/BLE 的使用体会">
+<meta property="og:url" content="http://yoursite.com/2017/05/21/ReactNative-BLE-的使用体会/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="我们从15年底开始使用 RN，版本号为0.16,到2月底为止，我们完成了三次版本的升级，最新版本为0.35。不得不说升级 RN 真是一件很费时费力的事情，期间版本变动较大。 我下面说一下我和我的团队在使用 RN 的一些问题，很可能我要说的这么问题，现在已经被解决啦。 基础知识React 的生命周期RN 中的每一个控件都是单独的，都有自己的生命周期，如图所示：  如图，可以把组件生命周期大致分为三个">
+<meta property="og:image" content="http://yoursite.com/2017/05/21/ReactNative-BLE-的使用体会/component-lifecycle.jpg">
+<meta property="og:updated_time" content="2017-05-21T15:16:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative/BLE 的使用体会">
+<meta name="twitter:description" content="我们从15年底开始使用 RN，版本号为0.16,到2月底为止，我们完成了三次版本的升级，最新版本为0.35。不得不说升级 RN 真是一件很费时费力的事情，期间版本变动较大。 我下面说一下我和我的团队在使用 RN 的一些问题，很可能我要说的这么问题，现在已经被解决啦。 基础知识React 的生命周期RN 中的每一个控件都是单独的，都有自己的生命周期，如图所示：  如图，可以把组件生命周期大致分为三个">
+<meta name="twitter:image" content="http://yoursite.com/2017/05/21/ReactNative-BLE-的使用体会/component-lifecycle.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/21/ReactNative-BLE-的使用体会/"/>
+
+
+
+
+
+  <title> ReactNative/BLE 的使用体会 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/21/ReactNative-BLE-的使用体会/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="喝咖啡的鱼儿">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ReactNative/BLE 的使用体会
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-21T22:04:34+08:00">
+                2017-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们从15年底开始使用 RN，版本号为0.16,到2月底为止，我们完成了三次版本的升级，最新版本为0.35。不得不说升级 RN 真是一件很费时费力的事情，期间版本变动较大。</p>
+<p>我下面说一下我和我的团队在使用 RN 的一些问题，很可能我要说的这么问题，现在已经被解决啦。</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><h3 id="React-的生命周期"><a href="#React-的生命周期" class="headerlink" title="React 的生命周期"></a>React 的生命周期</h3><p>RN 中的每一个控件都是单独的，都有自己的生命周期，如图所示：</p>
+<p><img src="/2017/05/21/ReactNative-BLE-的使用体会/component-lifecycle.jpg" alt=""></p>
+<p>如图，可以把组件生命周期大致分为三个阶段：</p>
+<ul>
+<li>第一阶段：是组件第一次绘制阶段，如图中的上面虚线框内，在这里完成了组件的加载和初始化；</li>
+<li>第二阶段：是组件在运行和交互阶段，如图中左下角虚线框，这个阶段组件可以处理用户交互，或者接收事件更新界面；</li>
+<li>第三阶段：是组件卸载消亡的阶段，如图中右下角的虚线框中，这里做一些组件的清理工作。</li>
+</ul>
+<h3 id="生命周期回调函数"><a href="#生命周期回调函数" class="headerlink" title="生命周期回调函数"></a>生命周期回调函数</h3><p>下面来详细介绍生命周期中的各回调函数。</p>
+<h4 id="getDefaultProps"><a href="#getDefaultProps" class="headerlink" title="getDefaultProps"></a>getDefaultProps</h4><p>在组件创建之前，会先调用 <code>getDefaultProps()</code>，这是全局调用一次，严格地来说，这不是组件的生命周期的一部分。在组件被创建并加载候，首先调用 <code>getInitialState()</code>，来初始化组件的状态。</p>
+<h4 id="componentWillMount"><a href="#componentWillMount" class="headerlink" title="componentWillMount"></a>componentWillMount</h4><p>然后，准备加载组件，会调用 <code>componentWillMount()</code>，其原型如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">componentWillMount</span><span class="params">()</span></span></div></pre></td></tr></table></figure>
+<p>这个函数调用时机是在组件创建，并初始化了状态之后，在第一次绘制 <code>render()</code> 之前。可以在这里做一些业务初始化操作，也可以设置组件状态。这个函数在整个生命周期中只被调用一次。</p>
+<h4 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount"></a>componentDidMount</h4><p>在组件第一次绘制之后，会调用 <code>componentDidMount()</code>，通知组件已经加载完成。函数原型如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">componentDidMount</span><span class="params">()</span></span></div></pre></td></tr></table></figure>
+<p>这个函数调用的时候，其虚拟 DOM 已经构建完成，你可以在这个函数开始获取其中的元素或者子组件了。需要注意的是，RN 框架是先调用子组件的 <code>componentDidMount()</code>，然后调用父组件的函数。从这个函数开始，就可以和 JS 其他框架交互了，例如设置计时 <code>setTimeout</code> 或者 <code>setInterval</code>，或者发起网络请求。这个函数也是只被调用一次。这个函数之后，就进入了稳定运行状态，等待事件触发。</p>
+<h4 id="componentWillReceiveProps"><a href="#componentWillReceiveProps" class="headerlink" title="componentWillReceiveProps"></a>componentWillReceiveProps</h4><p>如果组件收到新的属性（props），就会调用 <code>componentWillReceiveProps()</code>，其原型如下：</p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> componentWillReceiveProps(  </div><div class="line">  <span class="keyword">object</span> nextProps</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>输入参数 <code>nextProps</code> 是即将被设置的属性，旧的属性还是可以通过 <code>this.props</code> 来获取。在这个回调函数里面，你可以根据属性的变化，通过调用 <code>this.setState()</code> 来更新你的组件状态，这里调用更新状态是安全的，并不会触发额外的 <code>render()</code> 调用。如下：</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">componentWillReceiveProps: <span class="function"><span class="keyword">function</span><span class="params">(nextProps)</span> </span>&#123;  </div><div class="line">  <span class="keyword">this</span>.setState(&#123;</div><div class="line">    likesIncreasing: nextProps.likeCount &gt; <span class="keyword">this</span>.props.likeCount</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="shouldComponentUpdate"><a href="#shouldComponentUpdate" class="headerlink" title="shouldComponentUpdate"></a>shouldComponentUpdate</h4><p>当组件接收到新的属性和状态改变的话，都会触发调用 <code>shouldComponentUpdate(...)</code>，函数原型如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">boolean shouldComponentUpdate(  </div><div class="line">  <span class="selector-tag">object</span> nextProps, <span class="selector-tag">object</span> nextState</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>输入参数 <code>nextProps</code> 和上面的 <code>componentWillReceiveProps</code> 函数一样，<code>nextState</code> 表示组件即将更新的状态值。这个函数的返回值决定是否需要更新组件，如果 <code>true</code> 表示需要更新，继续走后面的更新流程。否者，则不更新，直接进入等待状态。</p>
+<p>默认情况下，这个函数永远返回 <code>true</code> 用来保证数据变化的时候 UI 能够同步更新。在大型项目中，你可以自己重载这个函数，通过检查变化前后属性和状态，来决定 UI 是否需要更新，能有效提高应用性能。</p>
+<h4 id="componentWillUpdate"><a href="#componentWillUpdate" class="headerlink" title="componentWillUpdate"></a>componentWillUpdate</h4><p>如果组件状态或者属性改变，并且上面的 <code>shouldComponentUpdate(...)</code> 返回为 <code>true</code>，就会开始准更新组件，并调用 <code>componentWillUpdate()</code>，其函数原型如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void componentWillUpdate(  </div><div class="line">  <span class="selector-tag">object</span> nextProps, <span class="selector-tag">object</span> nextState</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>输入参数与 <code>shouldComponentUpdate</code> 一样，在这个回调中，可以做一些在更新界面之前要做的事情。需要特别注意的是，在这个函数里面，你就不能使用 <code>this.setState</code> 来修改状态。这个函数调用之后，就会把 <code>nextProps</code> 和 <code>nextState</code> 分别设置到 <code>this.props</code>和 <code>this.state</code> 中。紧接着这个函数，就会调用 <code>render()</code> 来更新界面了。</p>
+<h4 id="componentDidUpdate"><a href="#componentDidUpdate" class="headerlink" title="componentDidUpdate"></a>componentDidUpdate</h4><p>调用了 <code>render()</code> 更新完成界面之后，会调用 <code>componentDidUpdate()</code> 来得到通知，其函数原型如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void componentDidUpdate(  </div><div class="line">  <span class="selector-tag">object</span> prevProps, <span class="selector-tag">object</span> prevState</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>因为到这里已经完成了属性和状态的更新了，此函数的输入参数变成了 <code>prevProps</code> 和 <code>prevState</code>。</p>
+<h4 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h4><p>当组件要被从界面上移除的时候，就会调用 <code>componentWillUnmount()</code>，其函数原型如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">componentWillUnmount</span><span class="params">()</span></span></div></pre></td></tr></table></figure>
+<p>在这个函数中，可以做一些组件相关的清理工作，例如取消计时器、网络请求等。</p>
+<p>总结一下：</p>
+<p>到这里，RN 的组件的完整的生命都介绍完了，在回头来看一下前面的图，就比较清晰了，把生命周期的回调函数总结成如下表格：</p>
+<table>
+<thead>
+<tr>
+<th>生命周期</th>
+<th>调用次数</th>
+<th>能否使用 setSate()</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getDefaultProps</td>
+<td>1(全局调用一次)</td>
+<td>否</td>
+</tr>
+<tr>
+<td>getInitialState</td>
+<td>1</td>
+<td>否</td>
+</tr>
+<tr>
+<td>componentWillMount</td>
+<td>1</td>
+<td>是</td>
+</tr>
+<tr>
+<td>render</td>
+<td>&gt;=1</td>
+<td>否</td>
+</tr>
+<tr>
+<td>componentDidMount</td>
+<td>1</td>
+<td>是</td>
+</tr>
+<tr>
+<td>componentWillReceiveProps</td>
+<td>&gt;=0</td>
+<td>是</td>
+</tr>
+<tr>
+<td>shouldComponentUpdate</td>
+<td>&gt;=0</td>
+<td>否</td>
+</tr>
+<tr>
+<td>componentWillUpdate</td>
+<td>&gt;=0</td>
+<td>否</td>
+</tr>
+<tr>
+<td>componentDidUpdate</td>
+<td>&gt;=0</td>
+<td>否</td>
+</tr>
+<tr>
+<td>componentWillUnmount</td>
+<td>1</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<h3 id="父子控件"><a href="#父子控件" class="headerlink" title="父子控件"></a>父子控件</h3><p>父子控件之间传值，如果是父控件给子空间传值，那么就利用子控件的<code>props</code>值；如果子空间向父控件传值，我想到的是 <strong>事件分发</strong>，这可是一项很重要的技能，我们的不同控件传值主要用的就是它。</p>
+<h4 id="State／Props"><a href="#State／Props" class="headerlink" title="State／Props"></a>State／Props</h4><p>每一个控件都有自己的 state 和 props 值，我们利用不同 state 值去实现页面的变化，利用 props 值去执行特定的操作。</p>
+<h4 id="ReactNative-的优缺点"><a href="#ReactNative-的优缺点" class="headerlink" title="ReactNative 的优缺点"></a>ReactNative 的优缺点</h4><p>优点</p>
+<ul>
+<li>跨平台特性，一套代码可以实现两个平台的效果</li>
+<li>原生的用户体验，这是它可以击败 H5 的地方。</li>
+<li>开发静态页面效率高</li>
+<li>网络请求封装的很好，fetch 、promise 使用起来很方便</li>
+</ul>
+<p>缺点</p>
+<ul>
+<li>不稳定，还处于完善的阶段。</li>
+<li>调试Debug时，提示错误比较晦涩难懂。</li>
+</ul>
+<p>下面讲讲我在利用 RN 开发应用的一下体会，</p>
+<ol>
+<li><p>ListView 的多状态显示</p>
+<p>现在可能已经不是问题了，但当时对我来说确实遇到困难了，这是我请示大神给予我的方案：将不同状态的元素放在不同的数组里，针对不同的数组去选择不同的 item 去渲染，这样就实现了不同的状态显示不同的item 的目的。</p>
+</li>
+<li><p>生命周期和数组的处理</p>
+<p>我在开发统计分享界面的时候，需要加载三个数组，每一个数组的条目都很多，大约30条左右吧，最初做这个界面的时候，就直接 Var 三个变量，这样测试在测试的时候发现，不停的进进出出这个页面，应用程序会卡顿；最后我们分析可能是数组的加载导致的。我们的方式是：（1）将数组放在组件的内部去加载，同时在组件被卸载之后呢，将数组晴空；（2） 将绘图的时机进行调整，当有状态值发生改变时才会去重画图片。</p>
+</li>
+<li><p>自定义 SliderBar</p>
+<p>刚开始使用RN 时，并没有 sliderBar 这个控件，但实际项目中还需要有这么一个控件，只能自定义啦。我们利用 PanResponse 的特性，获取手指点击区域的 XY value 来改变 View 的 width 属性实现动态的延展和缩放。</p>
+</li>
+<li><p>数据不一致的队列处理</p>
+<p>我们的app 在使用中需要于硬件设备进行交互，有时候我发给设备的值，设备并没有执行，这就出现了页面显示数据和设备数据不一致的情况。我们想到的办法是：利用队列。将要传输的数据放到队列中，逐次向下传输，同时设备会把它现在的值进行上报，我们会对队列的最后一个数据和设备的数据进行比较，如果不一致，再重新发一次命令；如果一致，将队列晴空。在多说一句，队列需要自己用 js 去实现。</p>
+</li>
+<li><p>Map 处理不同设备数据</p>
+<p>在开发过程中，某一个功能需要针对不同的设备设置不同的值，这个时候就需要 Map 的属性，还好 ES6 为我们提供了 Map,不需要我们自己去实现。</p>
+</li>
+<li><p>水波纹动画</p>
+<p>我们原本想用前后两张图片朝着同一个方法移动的方式去实现，但是实现之后发现问题较多，最后我们利用 ART 控件去画了正弦曲线，效果很好，详细的原理单独找一篇去写。</p>
+</li>
+</ol>
+<h4 id="RN-在两个平台的差异性"><a href="#RN-在两个平台的差异性" class="headerlink" title="RN 在两个平台的差异性"></a>RN 在两个平台的差异性</h4><ul>
+<li><p>flex 属性实现</p>
+<p>ios 针对 View 必须加上 Width 属性才能实现，Android 不需要。</p>
+</li>
+<li><p>Text 背景色</p>
+<p>如果不设置背景色，Android默认是透明色，ios 默认是白色,ios 需要添加 backgroundColor 属性。</p>
+</li>
+<li><p>ListView 控件</p>
+<p>ios需添加removeClippedSubviews={false}属性</p>
+</li>
+</ul>
+<h2 id="BlE"><a href="#BlE" class="headerlink" title="BlE"></a>BlE</h2><p>我确实弄了一年多的低功耗蓝牙开发，但也仅仅限于应用层开发，没有深入到底层，我就说一下我在应用层开发遇到的问题。</p>
+<ol>
+<li>关闭手机蓝牙，开启时需要执行一次搜索功能。主要针对三星设备</li>
+<li>自动连接功能的实现，再执行连接之前先执行一次搜索的操作，如果搜索到设备就发起连接，否则不发起连接。</li>
+<li>在连接的过程中，如果发生 <strong>133</strong> 错误，这个问题主要是手机本身蓝牙出现了问题。针对这个问题，我们做了多次连接的处理，当出现在这个状态码时，执行3次连接，如果3次连接还是没有成功，那么关闭 Gatt 端。</li>
+<li>进行DFU 升级时，如果发生失败，需要调用 refreshGatt(…) 方法来清空 Gatt 的缓存，否则升级失败的可能性很大</li>
+<li>搜索的时候，我们可以将公司的 UUID 放在一个 Bundle 里做一个集合，但是这种方式在 三星 S6 上出现了无法搜索到设备情况，所以暂时停滞了，但确实很简便。</li>
+<li>针对哪些在设备连接成功之后需要发送的命令，我们可以用一个单独的线程去执行命令的发送。这个线程的生命周期和应用一致。</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后写一下，自己这一年半的感悟吧，我的头的一句话还是挺触发我的，如下：</p>
+<p><strong>你完成的只是半成品</strong></p>
+<p><strong>选择一个点深挖进去</strong></p>
+<p><strong>逻辑的提升才是最重要的</strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/21/“ReactNative/" rel="prev" title="“ReactNative">
+                “ReactNative <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/header.jpg"
+               alt="喝咖啡的鱼儿" />
+          <p class="site-author-name" itemprop="name">喝咖啡的鱼儿</p>
+           
+              <p class="site-description motion-element" itemprop="description">愿你走出半生，归来仍是少年</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础知识"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#React-的生命周期"><span class="nav-number">1.1.</span> <span class="nav-text">React 的生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生命周期回调函数"><span class="nav-number">1.2.</span> <span class="nav-text">生命周期回调函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#getDefaultProps"><span class="nav-number">1.2.1.</span> <span class="nav-text">getDefaultProps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#componentWillMount"><span class="nav-number">1.2.2.</span> <span class="nav-text">componentWillMount</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#componentDidMount"><span class="nav-number">1.2.3.</span> <span class="nav-text">componentDidMount</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#componentWillReceiveProps"><span class="nav-number">1.2.4.</span> <span class="nav-text">componentWillReceiveProps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shouldComponentUpdate"><span class="nav-number">1.2.5.</span> <span class="nav-text">shouldComponentUpdate</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#componentWillUpdate"><span class="nav-number">1.2.6.</span> <span class="nav-text">componentWillUpdate</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#componentDidUpdate"><span class="nav-number">1.2.7.</span> <span class="nav-text">componentDidUpdate</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#componentWillUnmount"><span class="nav-number">1.2.8.</span> <span class="nav-text">componentWillUnmount</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#父子控件"><span class="nav-number">1.3.</span> <span class="nav-text">父子控件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#State／Props"><span class="nav-number">1.3.1.</span> <span class="nav-text">State／Props</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ReactNative-的优缺点"><span class="nav-number">1.3.2.</span> <span class="nav-text">ReactNative 的优缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RN-在两个平台的差异性"><span class="nav-number">1.3.3.</span> <span class="nav-text">RN 在两个平台的差异性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BlE"><span class="nav-number">2.</span> <span class="nav-text">BlE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">喝咖啡的鱼儿</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
