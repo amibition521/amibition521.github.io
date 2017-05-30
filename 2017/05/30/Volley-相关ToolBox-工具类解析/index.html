@@ -1,0 +1,702 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Volley 的工具类解析 NetworkByteArrayPool原文解释如下： 1234567891011ByteArrayPool is a source and repository of &amp;lt;code&amp;gt;byte[]&amp;lt;/code&amp;gt; objects. Its purpose is to supply those buffers to consumers who need">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Volley 相关ToolBox 工具类解析">
+<meta property="og:url" content="http://yoursite.com/2017/05/30/Volley-相关ToolBox-工具类解析/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Volley 的工具类解析 NetworkByteArrayPool原文解释如下： 1234567891011ByteArrayPool is a source and repository of &amp;lt;code&amp;gt;byte[]&amp;lt;/code&amp;gt; objects. Its purpose is to supply those buffers to consumers who need">
+<meta property="og:updated_time" content="2017-05-30T12:37:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Volley 相关ToolBox 工具类解析">
+<meta name="twitter:description" content="Volley 的工具类解析 NetworkByteArrayPool原文解释如下： 1234567891011ByteArrayPool is a source and repository of &amp;lt;code&amp;gt;byte[]&amp;lt;/code&amp;gt; objects. Its purpose is to supply those buffers to consumers who need">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/30/Volley-相关ToolBox-工具类解析/"/>
+
+
+
+
+
+  <title> Volley 相关ToolBox 工具类解析 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/30/Volley-相关ToolBox-工具类解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="喝咖啡的鱼儿">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Volley 相关ToolBox 工具类解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-30T20:11:15+08:00">
+                2017-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Volley 的工具类解析</p>
+<h3 id="Network"><a href="#Network" class="headerlink" title="Network"></a>Network</h3><h4 id="ByteArrayPool"><a href="#ByteArrayPool" class="headerlink" title="ByteArrayPool"></a>ByteArrayPool</h4><p>原文解释如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">ByteArrayPool is a source and repository of &lt;code&gt;byte[]&lt;/code&gt; objects. Its purpose is to supply those buffers to consumers who need to use them for a short period of time and then dispose of them. Simply creating and disposing such buffers in the conventional manner can considerable heap churn and garbage collection delays on Android, which lacks good management of short-lived heap objects. It may be advantageous to trade off some memory in the form of a permanently allocated pool of buffers in order to gain heap performance improvements; that is what this class does.</div><div class="line">   A good candidate user for this class is something like an I/O system that uses large temporary byte[] buffers to copy data around. In these use cases, often the consumer wants the buffer to be a certain minimum size to ensure good performance (e.g. when copying data chunks off of a stream), but doesn't mind if the buffer is larger than the minimum. Taking this into account and also to maximize the odds of being able to reuse a recycled buffer, this class is free to return buffers larger than the requested size. The caller needs to be able to gracefully deal with getting buffers any size over the minimum.</div><div class="line">  If there is not a suitably-sized buffer in its recycling pool when a buffer is requested, this class will allocate a new buffer and return it.</div><div class="line">  This class has no special ownership of buffers it creates; the caller is free to take a buffer it receives from this pool, use it permanently, and never return it to the pool; additionally,it is not harmful to return to this pool a buffer that was allocated elsewhere, provided there are no other lingering references to it.</div><div class="line">  This class ensures that the total size of the buffers in its recycling pool never exceeds a certain byte limit. When a buffer is returned that would cause the pool to exceed the limit,least-recently-used buffers are disposed.</div><div class="line">// Google 翻译如下</div><div class="line">ByteArrayPool是&lt;code&gt; byte [] &lt;/ code&gt;对象的源和存储库。其目的是为那些需要在短时间内使用它们然后处理它们的消费者提供这些缓冲区。以常规方式简单地创建和处理这些缓冲区可能会在Android上产生相当大的堆积和垃圾收集延迟，这对于短期堆栈对象缺乏良好的管理。以永久分配的缓冲池的形式来交换一些存储器可能是有利的，以便获得堆性能改进;这就是这个类的作用。</div><div class="line">   这个类就像一个使用大型临时byte []缓冲区来复制数据的I / O系统。在这些用例中，消费者通常希望缓冲区具有一定的最小尺寸以确保良好的性能（例如，当从数据流复制数据块时），但不介意缓冲区大于最小值。考虑到这一点，并且最大限度地提高了重新使用再循环缓冲区的可能性，该类可以自由地返回大于请求的大小的缓冲区。调用者需要能够优雅地处理任何尺寸的缓冲区。</div><div class="line">  如果在请求缓冲区时，它的回收池中没有适当大小的缓冲区，则此类将分配一个新的缓冲区并返回。</div><div class="line">  这个类对它创建的缓冲区没有特殊的所有权;调用者可以自由地从该池接收缓冲区，永久使用它，并且永远不会将其返回到池中;另外，如果没有其他逗号引用它，则将其分配给其他地方的缓冲区返回到此池是没有害处的。</div><div class="line">  此类确保其回收池中的缓冲区的总大小永远不会超过某个字节限制。当返回的缓冲区将导致池超过限制时，最近最少使用的缓冲区被排除。</div></pre></td></tr></table></figure>
+<p>上面已经把 ByteArrayPool 的作用说明白了，下面我们看下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ByteArrayPool</span> </span>&#123;</div><div class="line">    <span class="comment">/** The buffer pool, arranged both by last use and by buffer size */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;<span class="keyword">byte</span>[]&gt; mBuffersByLastUse = <span class="keyword">new</span> LinkedList&lt;<span class="keyword">byte</span>[]&gt;();</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;<span class="keyword">byte</span>[]&gt; mBuffersBySize = <span class="keyword">new</span> ArrayList&lt;<span class="keyword">byte</span>[]&gt;(<span class="number">64</span>);</div><div class="line"></div><div class="line">    <span class="comment">/** The total size of the buffers in the pool */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mCurrentSize = <span class="number">0</span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * The maximum aggregate size of the buffers in the pool. Old buffers are discarded to stay</div><div class="line">     * under this limit.</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> mSizeLimit;</div><div class="line"></div><div class="line">    <span class="comment">/** Compares buffers by size */</span></div><div class="line">    <span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">final</span> Comparator&lt;<span class="keyword">byte</span>[]&gt; BUF_COMPARATOR = <span class="keyword">new</span> Comparator&lt;<span class="keyword">byte</span>[]&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(<span class="keyword">byte</span>[] lhs, <span class="keyword">byte</span>[] rhs)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> lhs.length - rhs.length;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> sizeLimit the maximum size of the pool, in bytes</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ByteArrayPool</span><span class="params">(<span class="keyword">int</span> sizeLimit)</span> </span>&#123;</div><div class="line">        mSizeLimit = sizeLimit;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Returns a buffer from the pool if one is available in the requested size, or allocates a    		new one if a pooled one is not available.</div><div class="line">     * <span class="doctag">@param</span> len the minimum size, in bytes, of the requested buffer. The returned buffer may be</div><div class="line">     *        larger.</div><div class="line">     * <span class="doctag">@return</span> a byte[] buffer is always returned.</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">byte</span>[] getBuf(<span class="keyword">int</span> len) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mBuffersBySize.size(); i++) &#123;</div><div class="line">            <span class="keyword">byte</span>[] buf = mBuffersBySize.get(i);</div><div class="line">            <span class="keyword">if</span> (buf.length &gt;= len) &#123;</div><div class="line">                mCurrentSize -= buf.length;</div><div class="line">                mBuffersBySize.remove(i);</div><div class="line">                mBuffersByLastUse.remove(buf);</div><div class="line">                <span class="keyword">return</span> buf;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">byte</span>[len];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Returns a buffer to the pool, throwing away old buffers if the pool would exceed its 		   allotted size.</div><div class="line">     * <span class="doctag">@param</span> buf the buffer to return to the pool.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">returnBuf</span><span class="params">(<span class="keyword">byte</span>[] buf)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (buf == <span class="keyword">null</span> || buf.length &gt; mSizeLimit) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        mBuffersByLastUse.add(buf);</div><div class="line">        <span class="keyword">int</span> pos = Collections.binarySearch(mBuffersBySize, buf, BUF_COMPARATOR);</div><div class="line">        <span class="keyword">if</span> (pos &lt; <span class="number">0</span>) &#123;</div><div class="line">            pos = -pos - <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        mBuffersBySize.add(pos, buf);</div><div class="line">        mCurrentSize += buf.length;</div><div class="line">        trim();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Removes buffers from the pool until it is under its size limit.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">trim</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">while</span> (mCurrentSize &gt; mSizeLimit) &#123;</div><div class="line">            <span class="keyword">byte</span>[] buf = mBuffersByLastUse.remove(<span class="number">0</span>);</div><div class="line">            mBuffersBySize.remove(buf);</div><div class="line">            mCurrentSize -= buf.length;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/21/ReactNative-BLE-的使用体会/" rel="prev" title="ReactNative/BLE 的使用体会">
+                ReactNative/BLE 的使用体会 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/header.jpg"
+               alt="喝咖啡的鱼儿" />
+          <p class="site-author-name" itemprop="name">喝咖啡的鱼儿</p>
+           
+              <p class="site-description motion-element" itemprop="description">愿你走出半生，归来仍是少年</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Network"><span class="nav-number">1.</span> <span class="nav-text">Network</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ByteArrayPool"><span class="nav-number">1.1.</span> <span class="nav-text">ByteArrayPool</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">喝咖啡的鱼儿</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
