@@ -110,7 +110,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/12/18/Git-failed-to-connect-connection-refused-解决方案/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Failed to connect connect refuse处理git error  1【git使用】Failed to connect to 127.0.0.1 port 1080: Connection refused 问题出现的地方是代理导致的。先查看所有代理，之后每一个都 unset , 解决方案如下： 1env|grep -i proxy 会显示出所有的代理， 1ALL_PROXY=">
-<meta property="og:updated_time" content="2017-12-18T02:59:26.945Z">
+<meta property="og:updated_time" content="2017-12-18T03:00:36.639Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git failed to connect connection refused 解决方案">
 <meta name="twitter:description" content="Failed to connect connect refuse处理git error  1【git使用】Failed to connect to 127.0.0.1 port 1080: Connection refused 问题出现的地方是代理导致的。先查看所有代理，之后每一个都 unset , 解决方案如下： 1env|grep -i proxy 会显示出所有的代理， 1ALL_PROXY=">
@@ -343,7 +343,7 @@
 <p>问题出现的地方是代理导致的。先查看所有代理，之后每一个都 unset , 解决方案如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">env|grep -i proxy</div></pre></td></tr></table></figure>
 <p>会显示出所有的代理，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ALL_PROXY=socket://127.0.0.1:1080/</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ALL_PROXY=socks5://127.0.0.1:1080</div></pre></td></tr></table></figure>
 <p>执行 —unset 命令, 问题解决。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unset ALL_PROXY</div></pre></td></tr></table></figure>
 <p>万能的 stackoverflow 参考链接如下：</p>
