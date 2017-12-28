@@ -383,7 +383,7 @@
 <h4 id="componentWillReceiveProps"><a href="#componentWillReceiveProps" class="headerlink" title="componentWillReceiveProps"></a>componentWillReceiveProps</h4><p>如果组件收到新的属性（props），就会调用 <code>componentWillReceiveProps()</code>，其原型如下：</p>
 <figure class="highlight ceylon"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> componentWillReceiveProps(  </div><div class="line">  <span class="keyword">object</span> nextProps</div><div class="line">)</div></pre></td></tr></table></figure>
 <p>输入参数 <code>nextProps</code> 是即将被设置的属性，旧的属性还是可以通过 <code>this.props</code> 来获取。在这个回调函数里面，你可以根据属性的变化，通过调用 <code>this.setState()</code> 来更新你的组件状态，这里调用更新状态是安全的，并不会触发额外的 <code>render()</code> 调用。如下：</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">componentWillReceiveProps: <span class="function"><span class="keyword">function</span><span class="params">(nextProps)</span> </span>&#123;  </div><div class="line">  <span class="keyword">this</span>.setState(&#123;</div><div class="line">    likesIncreasing: nextProps.likeCount &gt; <span class="keyword">this</span>.props.likeCount</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">componentWillReceiveProps: <span class="function"><span class="keyword">function</span>(<span class="params">nextProps</span>) </span>&#123;  </div><div class="line">  <span class="keyword">this</span>.setState(&#123;</div><div class="line">    <span class="attr">likesIncreasing</span>: nextProps.likeCount &gt; <span class="keyword">this</span>.props.likeCount</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="shouldComponentUpdate"><a href="#shouldComponentUpdate" class="headerlink" title="shouldComponentUpdate"></a>shouldComponentUpdate</h4><p>当组件接收到新的属性和状态改变的话，都会触发调用 <code>shouldComponentUpdate(...)</code>，函数原型如下：</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">boolean shouldComponentUpdate(  </div><div class="line">  <span class="selector-tag">object</span> nextProps, <span class="selector-tag">object</span> nextState</div><div class="line">)</div></pre></td></tr></table></figure>
 <p>输入参数 <code>nextProps</code> 和上面的 <code>componentWillReceiveProps</code> 函数一样，<code>nextState</code> 表示组件即将更新的状态值。这个函数的返回值决定是否需要更新组件，如果 <code>true</code> 表示需要更新，继续走后面的更新流程。否者，则不更新，直接进入等待状态。</p>
@@ -645,7 +645,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

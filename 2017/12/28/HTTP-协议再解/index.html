@@ -1,0 +1,736 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="HTTP 协议头解析Request由四部分组成，包括：请求行、请求头(header) 、空行和请求数据。  Get 请求例子，如下： 12345GET /api/channelInfo?platformType=androidPhone&amp;amp;adapterNo=7.4.7&amp;amp;pid=&amp;amp;recommendNo=3,2&amp;amp;positionId=&amp;amp;pageSize=20&amp;">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP 协议再解">
+<meta property="og:url" content="http://yoursite.com/2017/12/28/HTTP-协议再解/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="HTTP 协议头解析Request由四部分组成，包括：请求行、请求头(header) 、空行和请求数据。  Get 请求例子，如下： 12345GET /api/channelInfo?platformType=androidPhone&amp;amp;adapterNo=7.4.7&amp;amp;pid=&amp;amp;recommendNo=3,2&amp;amp;positionId=&amp;amp;pageSize=20&amp;">
+<meta property="og:image" content="http://yoursite.com/2017/12/28/HTTP-协议再解/HTTP-协议再解/http%20请求信息结构.png">
+<meta property="og:updated_time" content="2017-12-28T09:44:47.550Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP 协议再解">
+<meta name="twitter:description" content="HTTP 协议头解析Request由四部分组成，包括：请求行、请求头(header) 、空行和请求数据。  Get 请求例子，如下： 12345GET /api/channelInfo?platformType=androidPhone&amp;amp;adapterNo=7.4.7&amp;amp;pid=&amp;amp;recommendNo=3,2&amp;amp;positionId=&amp;amp;pageSize=20&amp;">
+<meta name="twitter:image" content="http://yoursite.com/2017/12/28/HTTP-协议再解/HTTP-协议再解/http%20请求信息结构.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/28/HTTP-协议再解/"/>
+
+
+
+
+
+  <title> HTTP 协议再解 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/28/HTTP-协议再解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="喝咖啡的鱼儿">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                HTTP 协议再解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T16:50:18+08:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="HTTP-协议头解析"><a href="#HTTP-协议头解析" class="headerlink" title="HTTP 协议头解析"></a>HTTP 协议头解析</h2><h3 id="Request"><a href="#Request" class="headerlink" title="Request"></a>Request</h3><p>由四部分组成，包括：请求行、请求头(header) 、空行和请求数据。</p>
+<p><img src="HTTP-协议再解/http 请求信息结构.png" alt="http 请求信息结构"></p>
+<p>Get 请求例子，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">GET /api/channelInfo?platformType=androidPhone&amp;adapterNo=<span class="number">7.4</span>.7&amp;pid=&amp;recommendNo=<span class="number">3</span>,<span class="number">2</span>&amp;positionId=&amp;pageSize=<span class="number">20</span>&amp;protocol=<span class="number">1.0</span>.2 HTTP/<span class="number">1.1</span></div><div class="line">User-Agent: Dalvik/<span class="number">2.1</span>.0 (Linux; U; Android <span class="number">7.0</span>; SM-G9200 Build/NRD90M)</div><div class="line">Host: vcis.ifeng.com</div><div class="line">Connection: Keep-Alive</div><div class="line">Accept-Encoding: gzip</div></pre></td></tr></table></figure>
+<p>第一部分： 请求行，用来说明请求类型,要访问的资源以及所使用的HTTP版本.</p>
+<p>第二部分：请求头部，紧接着请求行（即第一行）之后的部分，用来说明服务器要使用的附加信息</p>
+<p>第三部分：空行，请求头部后面的空行是必须的</p>
+<p>第四部分：请求数据也叫主体，可以添加任意的其他数据。</p>
+<p>Post 请求列子， 如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">POST /appsta.js HTTP/<span class="number">1.1</span></div><div class="line">Content-Type: application/x-www-form-urlencoded; charset=UTF-<span class="number">8</span></div><div class="line">User-Agent: Dalvik/<span class="number">2.1</span>.0 (Linux; U; Android <span class="number">7.0</span>; SM-G9200 Build/NRD90M)</div><div class="line">Host: stadig0.ifeng.com</div><div class="line">Connection: Keep-Alive</div><div class="line">Accept-Encoding: gzip</div><div class="line">Content-Length: <span class="number">456</span></div><div class="line">  </div><div class="line"><span class="comment">// 请求数据</span></div><div class="line">publishid=<span class="number">30007</span>&amp;session=<span class="number">2017</span>-<span class="number">12</span>-<span class="number">28</span>%<span class="number">2</span>B17%<span class="number">3</span>A07%<span class="number">3</span>A43%<span class="number">23</span>adinfo%<span class="number">23</span>ainfo%<span class="number">3</span>D10019143%<span class="number">3</span>Aiis_feather_19143_568332_1514450844546_kmfoh1%<span class="number">3</span>A20%<span class="number">24f</span>irst%<span class="number">3</span>Dno&amp;pid=<span class="number">358108062984272</span>&amp;datatype=videoapp&amp;mos=android_7.0&amp;sp=cucc&amp;re=<span class="number">2560</span>*<span class="number">1440</span>&amp;sver=V1&amp;net=wifi&amp;userid=&amp;openudid=<span class="number">358108062984272</span>&amp;isupdate=<span class="number">1</span>&amp;logintime=<span class="number">1514436698</span>&amp;ua=sm-g9200%<span class="number">2</span>Csamsung&amp;uid=<span class="number">15144366981231380</span>&amp;userkey=f0663a966d82c57e7eb8976597e195f0&amp;softversion=<span class="number">7.4</span>.7&amp;sig=<span class="number">3f</span>c8rfc43rfcinfc4ac8e2thos0733d43wtc02gh3f076wr&amp;</div></pre></td></tr></table></figure>
+<h3 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h3><p>由 状态行、消息报头、空行和响应政文组成。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//状态行</span></div><div class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</div><div class="line">消息报头</div><div class="line">Server: nginx/<span class="number">1.8</span><span class="number">.0</span></div><div class="line"><span class="built_in">Date</span>: Thu, <span class="number">28</span> Dec <span class="number">2017</span> <span class="number">08</span>:<span class="number">47</span>:<span class="number">24</span> GMT</div><div class="line">Content-Length: <span class="number">172</span></div><div class="line">Pragma: No-cache</div><div class="line">Cache-Control: no-cache</div><div class="line">Expires: Thu, <span class="number">01</span> Jan <span class="number">1970</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> GMT</div><div class="line"><span class="built_in">Proxy</span>-Connection: Keep-alive</div><div class="line"><span class="comment">//--空行--</span></div><div class="line"><span class="comment">//响应正文</span></div><div class="line">&#123;<span class="string">"result"</span>:&#123;<span class="string">"timestamp"</span>:<span class="number">1514450844361</span>,<span class="string">"requesthost"</span>:<span class="string">"api.exc.mob.com"</span>,<span class="string">"requestport"</span>:<span class="number">80</span>,<span class="string">"enable"</span>:<span class="number">1</span>,<span class="string">"filter"</span>:[],<span class="string">"upconf"</span>:&#123;<span class="string">"crash"</span>:<span class="string">"1"</span>,<span class="string">"sdkerr"</span>:<span class="string">"0"</span>,<span class="string">"apperr"</span>:<span class="string">"0"</span>&#125;&#125;,<span class="string">"status"</span>:<span class="number">200</span>&#125;</div></pre></td></tr></table></figure>
+<p>Get 和 Post 的区别：</p>
+<ul>
+<li>GET提交的数据会放在URL之后，以?分割URL和传输数据，参数之间以&amp;相连，如stadig.ifeng.com?datatype=videoapp&amp;mos=android_7.0. POST方法是把提交的数据放在HTTP包的Body中.</li>
+<li>GET提交的数据大小有限制（因为浏览器对URL的长度有限制），而POST方法提交的数据没有限制.</li>
+<li>GET方式需要使用Request.QueryString来取得变量的值，而POST方式通过Request.Form来获取变量的值。</li>
+</ul>
+<h3 id="Volley-Post-请求实现"><a href="#Volley-Post-请求实现" class="headerlink" title="Volley  Post 请求实现"></a>Volley  Post 请求实现</h3><p>通过重写 getParams() 方法实现，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">postRequest</span><span class="params">(String url, <span class="keyword">final</span> Map&lt;String, String&gt; params, <span class="keyword">final</span> String session, <span class="keyword">final</span> Map&lt;String, String&gt; sigMap, Response.Listener listener, Response.ErrorListener errorListener)</span> </span>&#123;</div><div class="line">    StatisticPostRequest requestString = <span class="keyword">new</span> StatisticPostRequest(Request.Method.POST, url, <span class="keyword">null</span>, listener, errorListener) &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">protected</span> Map&lt;String, String&gt; <span class="title">getParams</span><span class="params">()</span> <span class="keyword">throws</span> AuthFailureError </span>&#123;</div><div class="line">            Map&lt;String, String&gt; map = params;</div><div class="line">            map.put(<span class="string">"session"</span>, session);</div><div class="line">            map.put(<span class="string">"sver"</span>, sigMap.get(<span class="string">"sver"</span>).trim());</div><div class="line">            map.put(<span class="string">"sig"</span>, sigMap.get(<span class="string">"sig"</span>).trim());</div><div class="line">            <span class="keyword">return</span> map;</div><div class="line">        &#125;</div><div class="line">    &#125;;</div><div class="line">    VolleyHelper.getRequestQueue().add(requestString);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>StatisticPostRequest   重写 getBody() 方法来对 params 进行 encode, 代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * post参数urlencode需要外部传入时自己拼</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StatisticPostRequest</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">BaseRequest</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Class&lt;T&gt; mClazz;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">StatisticPostRequest</span><span class="params">(<span class="keyword">int</span> method,</span></span></div><div class="line">                                String url,</div><div class="line">                                Class&lt;T&gt; clazz,</div><div class="line">                                Response.Listener&lt;T&gt; listener,</div><div class="line">                                Response.ErrorListener errorListener) &#123;</div><div class="line">        <span class="keyword">super</span>(method, url, listener, errorListener);</div><div class="line">        mClazz = clazz;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] getBody() <span class="keyword">throws</span> AuthFailureError &#123;</div><div class="line">        Map&lt;String, String&gt; params = getParams();</div><div class="line">        <span class="keyword">if</span> (params != <span class="keyword">null</span> &amp;&amp; params.size() &gt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> getParameters(params);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Converts &lt;code&gt;params&lt;/code&gt; into an application/x-www-form-urlencoded encoded string.</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] getParameters(Map&lt;String, String&gt; params) &#123;</div><div class="line">        StringBuilder encodedParams = <span class="keyword">new</span> StringBuilder();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">for</span> (Map.Entry&lt;String, String&gt; entry : params.entrySet()) &#123;</div><div class="line">                encodedParams.append(entry.getKey());</div><div class="line">                encodedParams.append(<span class="string">'='</span>);</div><div class="line">                encodedParams.append(entry.getValue());</div><div class="line">                encodedParams.append(<span class="string">'&amp;'</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> encodedParams.toString().getBytes();</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception uee) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Encoding not supported: "</span>, uee);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> T <span class="title">parseNetworkResponseDelegate</span><span class="params">(String jsonString)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> (T) jsonString;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还有一种方式，可以传入 请求体 requestBody, 代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Post请求，请求体为Json格式</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonPostRequest</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">JsonRequest</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Class&lt;T&gt; mClazz;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonPostRequest</span><span class="params">(<span class="keyword">int</span> method, String url, String requestBody,</span></span></div><div class="line">                           Class&lt;T&gt; clazz,</div><div class="line">                           Response.Listener&lt;T&gt; listener,</div><div class="line">                           Response.ErrorListener errorListener) &#123;</div><div class="line">        <span class="keyword">super</span>(method, url, requestBody, listener, errorListener);</div><div class="line">        mClazz = clazz;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> Response&lt;T&gt; <span class="title">parseNetworkResponse</span><span class="params">(NetworkResponse response)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            String jsonString = <span class="keyword">new</span> String(response.data, HttpHeaderParser.parseCharset(response.headers));</div><div class="line"></div><div class="line">            <span class="keyword">return</span> Response.success(JsonUtils.parseObject(jsonString, mClazz),</div><div class="line">                    HttpHeaderParser.parseCacheHeaders(response));</div><div class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</div><div class="line">            <span class="keyword">return</span> Response.error(<span class="keyword">new</span> ParseError(e));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>父类如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * A request for retrieving a T type response body at a given URL that also</div><div class="line"> * optionally sends along a JSON body in the request specified.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@param</span> &lt;T&gt; JSON type of response expected</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">JsonRequest</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">Request</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">    <span class="comment">/** Charset for request. */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String PROTOCOL_CHARSET = <span class="string">"utf-8"</span>;</div><div class="line"></div><div class="line">    <span class="comment">/** Content type for request. */</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String PROTOCOL_CONTENT_TYPE =</div><div class="line">        String.format(<span class="string">"application/json; charset=%s"</span>, PROTOCOL_CHARSET);</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Listener&lt;T&gt; mListener;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String mRequestBody;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Deprecated constructor for a JsonRequest which defaults to GET unless &#123;<span class="doctag">@link</span> #getPostBody()&#125;</div><div class="line">     * or &#123;<span class="doctag">@link</span> #getPostParams()&#125; is overridden (which defaults to POST).</div><div class="line">     *</div><div class="line">     * <span class="doctag">@deprecated</span> Use &#123;<span class="doctag">@link</span> #JsonRequest(int, String, String, Listener, ErrorListener)&#125;.</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonRequest</span><span class="params">(String url, String requestBody, Listener&lt;T&gt; listener,</span></span></div><div class="line">            ErrorListener errorListener) &#123;</div><div class="line">        <span class="keyword">this</span>(Method.DEPRECATED_GET_OR_POST, url, requestBody, listener, errorListener);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">JsonRequest</span><span class="params">(<span class="keyword">int</span> method, String url, String requestBody, Listener&lt;T&gt; listener,</span></span></div><div class="line">            ErrorListener errorListener) &#123;</div><div class="line">        <span class="keyword">super</span>(method, url, errorListener);</div><div class="line">        mListener = listener;</div><div class="line">        mRequestBody = requestBody;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">deliverResponse</span><span class="params">(T response)</span> </span>&#123;</div><div class="line">        mListener.onResponse(response);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Response&lt;T&gt; <span class="title">parseNetworkResponse</span><span class="params">(NetworkResponse response)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@deprecated</span> Use &#123;<span class="doctag">@link</span> #getBodyContentType()&#125;.</div><div class="line">     */</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPostBodyContentType</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> getBodyContentType();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@deprecated</span> Use &#123;<span class="doctag">@link</span> #getBody()&#125;.</div><div class="line">     */</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] getPostBody() &#123;</div><div class="line">        <span class="keyword">return</span> getBody();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getBodyContentType</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> PROTOCOL_CONTENT_TYPE;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] getBody() &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">return</span> mRequestBody == <span class="keyword">null</span> ? <span class="keyword">null</span> : mRequestBody.getBytes(PROTOCOL_CHARSET);</div><div class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException uee) &#123;</div><div class="line">            VolleyLog.wtf(<span class="string">"Unsupported Encoding while trying to get the bytes of %s using %s"</span>,</div><div class="line">                    mRequestBody, PROTOCOL_CHARSET);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<p>纪念一下，从成为一个开发者之后第一次，由于自己的 <strong>CTRL + C</strong> / <strong>CTRL+ V</strong>  导致线上版本统计出问题，领导很快就决定 每人罚款 ¥五百 ，以示惩戒。</p>
+<p><strong>罚款不是目的</strong></p>
+<p>愿 2018 一切顺利！！！</p>
+<ul>
+<li><p>​</p>
+</li>
+<li><p>​</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/22/重新了解Android-Studio-快捷键/" rel="prev" title="重新了解Android Studio 快捷键">
+                重新了解Android Studio 快捷键 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/header.jpg"
+               alt="喝咖啡的鱼儿" />
+          <p class="site-author-name" itemprop="name">喝咖啡的鱼儿</p>
+           
+              <p class="site-description motion-element" itemprop="description">愿你走出半生，归来仍是少年</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-协议头解析"><span class="nav-number">1.</span> <span class="nav-text">HTTP 协议头解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Request"><span class="nav-number">1.1.</span> <span class="nav-text">Request</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Response"><span class="nav-number">1.2.</span> <span class="nav-text">Response</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Volley-Post-请求实现"><span class="nav-number">1.3.</span> <span class="nav-text">Volley  Post 请求实现</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">喝咖啡的鱼儿</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
