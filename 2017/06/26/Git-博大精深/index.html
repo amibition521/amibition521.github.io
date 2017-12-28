@@ -110,7 +110,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/06/26/Git-博大精深/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="ChangeId Missing这个错误的前提是服务器端使用gerrit作为代码审查的工具， 123456789101112131415161718192021localhost:android_video_phone zhangzd$ git push ifeng IfengVideo:refs/for/masterCounting objects: 18, done.Delta compre">
-<meta property="og:updated_time" content="2017-06-26T09:53:21.000Z">
+<meta property="og:updated_time" content="2017-12-28T09:59:45.550Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git 博大精深">
 <meta name="twitter:description" content="ChangeId Missing这个错误的前提是服务器端使用gerrit作为代码审查的工具， 123456789101112131415161718192021localhost:android_video_phone zhangzd$ git push ifeng IfengVideo:refs/for/masterCounting objects: 18, done.Delta compre">
@@ -355,8 +355,9 @@
 <p>待到生成 <code>change-Id</code> , 可以使用如下命令查看，</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git show &lt;commit_id&gt;</div></pre></td></tr></table></figure>
 <p>再次执行 <code>push</code> 操作：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push ifeng IfengVideo:refs/for/master</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">git push ifeng IfengVideo:refs/for/master</div><div class="line"></div><div class="line">//代码提交到 gerrit 上 等待 review</div><div class="line">git push origin master:refs/for/master</div><div class="line">//提交到远程</div><div class="line">git push origin master</div></pre></td></tr></table></figure>
 <p>完毕</p>
+<h3 id="GIT-Branch"><a href="#GIT-Branch" class="headerlink" title="GIT Branch"></a>GIT Branch</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">git branch</div><div class="line">//查看所有存在的分支，包括远程分支</div><div class="line">git branch -av</div><div class="line">//新建分支</div><div class="line">git branch newBranch</div><div class="line">//删除分支，必须不在当前分支</div><div class="line">git branch -d newBranch</div><div class="line">//切换分支</div><div class="line">git checkout newBranch</div><div class="line">//以远程分支为基础新建分支</div><div class="line">git checkout newBranch remotes/branch</div><div class="line">//作用是checkout远程的dev分支，在本地起名为dev分支，并切换到本地的dev分支</div><div class="line">git checkout -b dev origin/dev，</div><div class="line">git checkout -b release origin/release，作用参见上一步解释</div><div class="line">git checkout dev，切换回dev分支，并开始开发。</div><div class="line">//为当前提交打标签</div><div class="line">git tag tag-name</div></pre></td></tr></table></figure>
 <p>总结一下，git 回退版本的相关命令</p>
 <p> 根据–soft –mixed –hard，会对working tree和index和HEAD进行重置:</p>
 <ul>
@@ -541,7 +542,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ChangeId-Missing"><span class="nav-number">1.</span> <span class="nav-text">ChangeId Missing</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ChangeId-Missing"><span class="nav-number">1.</span> <span class="nav-text">ChangeId Missing</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GIT-Branch"><span class="nav-number"></span> <span class="nav-text">GIT Branch</span></a></div>
             
 
           </div>
