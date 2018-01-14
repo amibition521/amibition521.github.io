@@ -111,7 +111,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="2.1 获取 Git 仓库在现有目录初始化仓库1git init 命令将创建一个名为 .git 的子目录，这个子目录含有你初始化的 Git 仓库中所有的必须文件，这些文件是 Git 仓库的骨干。此时这些文件还处于未被跟踪状态，需要执行git add 命令来对文件进行跟踪，然后执行 git commit 进行提交。 1234git add .git add README.txtgit commit">
 <meta property="og:image" content="http://yoursite.com/2018/01/14/Prog-Git-第二章-git-基础/lifecycle.png">
-<meta property="og:updated_time" content="2018-01-14T07:09:52.458Z">
+<meta property="og:updated_time" content="2018-01-14T12:00:22.880Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Prog Git 第二章 git 基础">
 <meta name="twitter:description" content="2.1 获取 Git 仓库在现有目录初始化仓库1git init 命令将创建一个名为 .git 的子目录，这个子目录含有你初始化的 Git 仓库中所有的必须文件，这些文件是 Git 仓库的骨干。此时这些文件还处于未被跟踪状态，需要执行git add 命令来对文件进行跟踪，然后执行 git commit 进行提交。 1234git add .git add README.txtgit commit">
@@ -405,6 +405,53 @@
 <h3 id="移除文件"><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h3><p>从 <code>Git</code> 中移除某个文件，实质上是从暂存区移除，然后执行提交。使用 <code>git rm</code> 命令。 如果删除之前修改过并且已经放到暂存区域的话，则必须要用强制删除选项 <code>-f</code>。</p>
 <p>如果我们想把 <code>git</code> 仓库中的文件删除但想保留在本地，我们可以执行 <code>git rm --cached &lt;file&gt;…</code> 命令。</p>
 <h3 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git mv file_old file-new</div></pre></td></tr></table></figure>
+<h3 id="查看提交历史"><a href="#查看提交历史" class="headerlink" title="查看提交历史"></a>查看提交历史</h3><h4 id="查看提交历史-1"><a href="#查看提交历史-1" class="headerlink" title="查看提交历史"></a>查看提交历史</h4><p>使用 <code>git log</code> 来开始查看提交历史，该命令有许多选项可以帮助你搜寻你所要找的提交，介绍一些比较常用的。</p>
+<p><code>git log -p -2</code>  用来显示最近两次提交的内容差异</p>
+<p><code>git log --stat</code>  查看每次提交的简略的统计信息</p>
+<p><code>git log --pretty</code> 指定使用不同于默认格式的方式展示提交历史。很多子选项也是很有用的，</p>
+<ul>
+<li><p><code>oneline</code>   将每个提交显示在一行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git log --pretty=oneline</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>format</code> 定制要显示的记录格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git log --pretty=format:&quot;%h - %an, %ar : %s&quot;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="撤销操作"><a href="#撤销操作" class="headerlink" title="撤销操作"></a>撤销操作</h3><h4 id="遗漏文件没有提交"><a href="#遗漏文件没有提交" class="headerlink" title="遗漏文件没有提交"></a>遗漏文件没有提交</h4><p>执行 <code>git commit --amend</code> 尝试重新提交，会覆盖一切上次提交， <code>git</code> 记录里只会有一次提交。</p>
+<h4 id="取消暂存区文件"><a href="#取消暂存区文件" class="headerlink" title="取消暂存区文件"></a>取消暂存区文件</h4><p>执行 <code>git reset HEAD &lt;file&gt;…</code> 可以对文件取消暂存</p>
+<h4 id="撤销对文件的修改"><a href="#撤销对文件的修改" class="headerlink" title="撤销对文件的修改"></a>撤销对文件的修改</h4><p>执行 <code>git checkout file</code> 可以撤销你对文件做的所有修改，它的原理是拷贝了另一个文件来覆盖它。是一个很危险的命令。</p>
+<h3 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h3><h4 id="查看远程仓库"><a href="#查看远程仓库" class="headerlink" title="查看远程仓库"></a>查看远程仓库</h4><p>执行 <code>git remote</code>  命令，会列车远程服务器的简写。 <code>origin</code> 是远程仓库服务器的默认名字。</p>
+<p><code>git remote -v</code>  会显示读写远程仓库的简写与对应的 Url</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git remote -v</div><div class="line">origin	https://github.com/schacon/ticgit (fetch)</div><div class="line">origin	https://github.com/schacon/ticgit (push)</div></pre></td></tr></table></figure>
+<h4 id="添加远程仓库"><a href="#添加远程仓库" class="headerlink" title="添加远程仓库"></a>添加远程仓库</h4><p>运行 <code>git remote add &lt;shortname&gt; &lt;url&gt;</code> 命令，会添加一个新的 Git 仓库，使用 <code>pb</code> 来代替 Url。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">git remote</div><div class="line">origin</div><div class="line">git remote add pb https://github.com/paulboone/ticgit</div><div class="line">git remote -v</div><div class="line">origin	https://github.com/schacon/ticgit (fetch)</div><div class="line">origin	https://github.com/schacon/ticgit (push)</div><div class="line">pb	https://github.com/paulboone/ticgit (fetch)</div><div class="line">pb	https://github.com/paulboone/ticgit (push)</div></pre></td></tr></table></figure>
+<h4 id="抓取与拉取远程仓库"><a href="#抓取与拉取远程仓库" class="headerlink" title="抓取与拉取远程仓库"></a>抓取与拉取远程仓库</h4><ul>
+<li><code>git fetch [remote-name]</code>  该命令会将远程仓库的数据拉取到本地仓库， 但它并不会自动合并或者修改你当前的目录，你必须手动完成合并工作。</li>
+<li><code>git pull [remote_name]</code>  该命令会自动抓取然后合并远程分支到当前分支。</li>
+</ul>
+<h3 id="推送到远程仓库"><a href="#推送到远程仓库" class="headerlink" title="推送到远程仓库"></a>推送到远程仓库</h3><p><code>git push [remote-name] [brach-master]</code> </p>
+<h4 id="查看远程仓库信息"><a href="#查看远程仓库信息" class="headerlink" title="查看远程仓库信息"></a>查看远程仓库信息</h4><p><code>git remote show [remote-name]</code> </p>
+<h4 id="移除和重命名远程仓库"><a href="#移除和重命名远程仓库" class="headerlink" title="移除和重命名远程仓库"></a>移除和重命名远程仓库</h4><p><code>git remote rename old new</code>  修改远程仓库的名字</p>
+<p><code>git remote rm old</code>  移除远程仓库</p>
+<h3 id="打标签"><a href="#打标签" class="headerlink" title="打标签"></a>打标签</h3><p><code>git tag</code>  会列出已有的标签</p>
+<p><code>git tag -l &#39;v1.8.5*&#39;</code>  使用特定模式查找标签</p>
+<h4 id="创建标签"><a href="#创建标签" class="headerlink" title="创建标签"></a>创建标签</h4><ul>
+<li><p>附注标签  <code>git tag -a [tag_info]</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git tag -a v1.4 -m &apos;my version 1.4&apos;</div></pre></td></tr></table></figure>
+<p><code>git show v1.4</code>  可以看到标签信息和对应的提交信息</p>
+</li>
+<li><p>轻量标签</p>
+<p><code>git tag [info]</code> </p>
+</li>
+<li><p>后期打标签</p>
+<p><code>git tag -a v1.2 [指定提交校验和]</code></p>
+</li>
+</ul>
+<h4 id="共享标签"><a href="#共享标签" class="headerlink" title="共享标签"></a>共享标签</h4><p><code>git push origin [tagname]</code>  推送标签到共享服务器。</p>
+<p><code>git push origin --tags</code>  一次将所有不在远程仓库的标签传送到服务器。</p>
+<h4 id="检出标签"><a href="#检出标签" class="headerlink" title="检出标签"></a>检出标签</h4><p><code>git checkout -b [branchname] [tagname]</code> 在特定标签创建一个新的分支。</p>
+<h3 id="Git-别名"><a href="#Git-别名" class="headerlink" title="Git 别名"></a>Git 别名</h3><p>通过 <code>git config</code> 文件来为每个命令设置别名，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">git config --global alias.co checkout</div><div class="line">git config --global alias.br branch</div><div class="line">git config --global alias.ci commit</div><div class="line">git config --global alias.st status</div><div class="line">git config --global alias.unstage &apos;reset HEAD --&apos;</div><div class="line">git config --global alias.last &apos;log -1 HEAD&apos;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -584,7 +631,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-获取-Git-仓库"><span class="nav-number">1.</span> <span class="nav-text">2.1 获取 Git 仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在现有目录初始化仓库"><span class="nav-number">1.1.</span> <span class="nav-text">在现有目录初始化仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#克隆已有仓库"><span class="nav-number">1.2.</span> <span class="nav-text">克隆已有仓库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#记录每次更新到仓库"><span class="nav-number">2.</span> <span class="nav-text">记录每次更新到仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#检查文件的状态"><span class="nav-number">2.1.</span> <span class="nav-text">检查文件的状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跟踪新文件"><span class="nav-number">2.2.</span> <span class="nav-text">跟踪新文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#暂存已修改文件"><span class="nav-number">2.3.</span> <span class="nav-text">暂存已修改文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忽略文件"><span class="nav-number">3.</span> <span class="nav-text">忽略文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件差异"><span class="nav-number">4.</span> <span class="nav-text">文件差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件提交"><span class="nav-number">5.</span> <span class="nav-text">文件提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除文件"><span class="nav-number">6.</span> <span class="nav-text">移除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移动文件"><span class="nav-number">7.</span> <span class="nav-text">移动文件</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-获取-Git-仓库"><span class="nav-number">1.</span> <span class="nav-text">2.1 获取 Git 仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在现有目录初始化仓库"><span class="nav-number">1.1.</span> <span class="nav-text">在现有目录初始化仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#克隆已有仓库"><span class="nav-number">1.2.</span> <span class="nav-text">克隆已有仓库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#记录每次更新到仓库"><span class="nav-number">2.</span> <span class="nav-text">记录每次更新到仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#检查文件的状态"><span class="nav-number">2.1.</span> <span class="nav-text">检查文件的状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#跟踪新文件"><span class="nav-number">2.2.</span> <span class="nav-text">跟踪新文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#暂存已修改文件"><span class="nav-number">2.3.</span> <span class="nav-text">暂存已修改文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忽略文件"><span class="nav-number">3.</span> <span class="nav-text">忽略文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件差异"><span class="nav-number">4.</span> <span class="nav-text">文件差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件提交"><span class="nav-number">5.</span> <span class="nav-text">文件提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除文件"><span class="nav-number">6.</span> <span class="nav-text">移除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移动文件"><span class="nav-number">7.</span> <span class="nav-text">移动文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看提交历史"><span class="nav-number">8.</span> <span class="nav-text">查看提交历史</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看提交历史-1"><span class="nav-number">8.1.</span> <span class="nav-text">查看提交历史</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销操作"><span class="nav-number">9.</span> <span class="nav-text">撤销操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#遗漏文件没有提交"><span class="nav-number">9.1.</span> <span class="nav-text">遗漏文件没有提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#取消暂存区文件"><span class="nav-number">9.2.</span> <span class="nav-text">取消暂存区文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#撤销对文件的修改"><span class="nav-number">9.3.</span> <span class="nav-text">撤销对文件的修改</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#远程仓库"><span class="nav-number">10.</span> <span class="nav-text">远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看远程仓库"><span class="nav-number">10.1.</span> <span class="nav-text">查看远程仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加远程仓库"><span class="nav-number">10.2.</span> <span class="nav-text">添加远程仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抓取与拉取远程仓库"><span class="nav-number">10.3.</span> <span class="nav-text">抓取与拉取远程仓库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送到远程仓库"><span class="nav-number">11.</span> <span class="nav-text">推送到远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看远程仓库信息"><span class="nav-number">11.1.</span> <span class="nav-text">查看远程仓库信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#移除和重命名远程仓库"><span class="nav-number">11.2.</span> <span class="nav-text">移除和重命名远程仓库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打标签"><span class="nav-number">12.</span> <span class="nav-text">打标签</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建标签"><span class="nav-number">12.1.</span> <span class="nav-text">创建标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#共享标签"><span class="nav-number">12.2.</span> <span class="nav-text">共享标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检出标签"><span class="nav-number">12.3.</span> <span class="nav-text">检出标签</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-别名"><span class="nav-number">13.</span> <span class="nav-text">Git 别名</span></a></li></ol></div>
             
 
           </div>

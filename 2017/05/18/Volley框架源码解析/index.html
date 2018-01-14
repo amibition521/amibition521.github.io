@@ -366,7 +366,7 @@
 
       
         <p>Volley 是 Google 在2013年 Google I/O 大会上推出的一款 Android 异步网络请求框架。名字的由来：</p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">a</span> burst <span class="keyword">or</span> emission <span class="keyword">of</span> many things <span class="keyword">or</span> <span class="keyword">a</span> large amount <span class="keyword">at</span> once.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">a burst or emission of many things or a large amount at once.</div></pre></td></tr></table></figure>
 <p>它的特点：适合 <strong>数据量小、通信频繁</strong> 的网络操作。我们可以从 github 上下载它的源码，地址：<a href="https://github.com/google/volley" target="_blank" rel="external">https://github.com/google/volley</a></p>
 <h3 id="Volley-整体设计"><a href="#Volley-整体设计" class="headerlink" title="Volley 整体设计"></a>Volley 整体设计</h3><p>新建一个 Request 请求，将其添加到 RequestQueue 中，这里有一个判断,首先新建一个 CacheDispatcher(继承自 Thread) 判断内存中是否存在，如果存在就从内存中去；否则新建 NetworkDispatcher 去执行网络请求。最后通过 ResponseDelivery 处理反馈回来的数据。</p>
 <h3 id="Volley-中相关概念"><a href="#Volley-中相关概念" class="headerlink" title="Volley 中相关概念"></a>Volley 中相关概念</h3><h4 id="Volley"><a href="#Volley" class="headerlink" title="Volley"></a>Volley</h4><p>一个工具类，它里面只有简单的几行代码，通过 newRequestQueue(…)  函数新建并启动一个请求队列 RequestQueue。</p>
