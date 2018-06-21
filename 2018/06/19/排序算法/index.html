@@ -103,19 +103,19 @@
 
 
 
-<meta name="description" content="排序[TOC] Bubble Sort 冒泡排序定义：重复比较数组中相邻的元素，如果前一个元素比后一个元素大，则交换他们的位置，如此重复，直到将最大的元素放到最后；重复上述步骤，每一次都将前面未排序的最大元素已经放到最后； 助记码： 123i∈[0,N-1)               //循环N-1遍  j∈[0,N-1-i)           //每遍循环要处理的无序部分    swap(j">
+<meta name="description" content="排序Bubble Sort 冒泡排序定义：重复比较数组中相邻的元素，如果前一个元素比后一个元素大，则交换他们的位置，如此重复，直到将最大的元素放到最后；重复上述步骤，每一次都将前面未排序的最大元素已经放到最后； 助记码： 123i∈[0,N-1)               //循环N-1遍  j∈[0,N-1-i)           //每遍循环要处理的无序部分    swap(j,j+1)">
 <meta name="keywords">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排序算法">
 <meta property="og:url" content="http://yoursite.com/2018/06/19/排序算法/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="排序[TOC] Bubble Sort 冒泡排序定义：重复比较数组中相邻的元素，如果前一个元素比后一个元素大，则交换他们的位置，如此重复，直到将最大的元素放到最后；重复上述步骤，每一次都将前面未排序的最大元素已经放到最后； 助记码： 123i∈[0,N-1)               //循环N-1遍  j∈[0,N-1-i)           //每遍循环要处理的无序部分    swap(j">
+<meta property="og:description" content="排序Bubble Sort 冒泡排序定义：重复比较数组中相邻的元素，如果前一个元素比后一个元素大，则交换他们的位置，如此重复，直到将最大的元素放到最后；重复上述步骤，每一次都将前面未排序的最大元素已经放到最后； 助记码： 123i∈[0,N-1)               //循环N-1遍  j∈[0,N-1-i)           //每遍循环要处理的无序部分    swap(j,j+1)">
 <meta property="og:image" content="https://wikimedia.org/api/rest_v1/media/math/render/svg/6cd9594a16cb898b8f2a2dff9227a385ec183392">
 <meta property="og:image" content="http://images2015.cnblogs.com/blog/936002/201604/936002-20160419200543054-1710853388.png">
-<meta property="og:updated_time" content="2018-06-21T08:29:00.574Z">
+<meta property="og:updated_time" content="2018-06-21T08:33:05.064Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排序算法">
-<meta name="twitter:description" content="排序[TOC] Bubble Sort 冒泡排序定义：重复比较数组中相邻的元素，如果前一个元素比后一个元素大，则交换他们的位置，如此重复，直到将最大的元素放到最后；重复上述步骤，每一次都将前面未排序的最大元素已经放到最后； 助记码： 123i∈[0,N-1)               //循环N-1遍  j∈[0,N-1-i)           //每遍循环要处理的无序部分    swap(j">
+<meta name="twitter:description" content="排序Bubble Sort 冒泡排序定义：重复比较数组中相邻的元素，如果前一个元素比后一个元素大，则交换他们的位置，如此重复，直到将最大的元素放到最后；重复上述步骤，每一次都将前面未排序的最大元素已经放到最后； 助记码： 123i∈[0,N-1)               //循环N-1遍  j∈[0,N-1-i)           //每遍循环要处理的无序部分    swap(j,j+1)">
 <meta name="twitter:image" content="https://wikimedia.org/api/rest_v1/media/math/render/svg/6cd9594a16cb898b8f2a2dff9227a385ec183392">
 
 
@@ -341,8 +341,7 @@
       
 
       
-        <h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><p>[TOC]</p>
-<h3 id="Bubble-Sort-冒泡排序"><a href="#Bubble-Sort-冒泡排序" class="headerlink" title="Bubble Sort 冒泡排序"></a>Bubble Sort 冒泡排序</h3><p>定义：重复比较数组中相邻的元素，如果前一个元素比后一个元素大，则交换他们的位置，如此重复，直到将最大的元素放到最后；重复上述步骤，每一次都将前面未排序的最大元素已经放到最后；</p>
+        <h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><h3 id="Bubble-Sort-冒泡排序"><a href="#Bubble-Sort-冒泡排序" class="headerlink" title="Bubble Sort 冒泡排序"></a>Bubble Sort 冒泡排序</h3><p>定义：重复比较数组中相邻的元素，如果前一个元素比后一个元素大，则交换他们的位置，如此重复，直到将最大的元素放到最后；重复上述步骤，每一次都将前面未排序的最大元素已经放到最后；</p>
 <p>助记码：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">i∈[<span class="number">0</span>,N<span class="number">-1</span>)               <span class="comment">//循环N-1遍</span></div><div class="line">  j∈[<span class="number">0</span>,N<span class="number">-1</span>-i)           <span class="comment">//每遍循环要处理的无序部分</span></div><div class="line">    swap(j,j+<span class="number">1</span>)          <span class="comment">//两两排序（升序/降序）</span></div></pre></td></tr></table></figure>
 <p>代码实现：</p>
